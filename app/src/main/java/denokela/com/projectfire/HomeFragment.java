@@ -25,17 +25,17 @@ import android.widget.Toast;
 public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final int STORAGE_PERMISSION_CODE = 125;
     TextView nametview;
-    Button buttonsearch,viewall,btnviewlevel;
-    EditText editsearch;
+    Button buttonsearch, viewall, btnviewlevel, marshbtnsearch, marshbtnviewall, marshbtnviewgradlevel;
+    EditText editsearch,marsheditsearch;
     ProgressDialog progressDialog;
-    String searchword;
-    Spinner viewerspin;
+    String searchword,marshallsearchword;
+    Spinner viewerspin, marshviewerspin;
     TabHost tabHost;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_home_fragment,container,false);
+        return inflater.inflate(R.layout.activity_home_fragment, container, false);
     }
 
     @Override
@@ -59,96 +59,151 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         specs.setIndicator("Members");
         tabHost.addTab(specs);
 
-        specs= tabHost.newTabSpec("tag2");
+        specs = tabHost.newTabSpec("tag2");
         specs.setContent(R.id.tab2);
         specs.setIndicator("Marshalls");
         tabHost.addTab(specs);
 
-        Bundle getnames =getActivity().getIntent().getExtras();
-        String names =getnames.getString("Name");
+        fieldmarshallvariableinit();
+
+        Bundle getnames = getActivity().getIntent().getExtras();
+        String names = getnames.getString("Name");
         nametview.setText(names);
         buttonsearch.setOnClickListener(this);
         viewall.setOnClickListener(this);
         btnviewlevel.setOnClickListener(this);
     }
 
-    public void requestStoragePermission(){
-        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)==
-                PackageManager.PERMISSION_GRANTED){
+    private void fieldmarshallvariableinit() {
+        marshbtnsearch = (Button) getView().findViewById(R.id.marshallbtnsearch);
+        marshbtnviewall = (Button) getView().findViewById(R.id.marshallbtnviewall);
+        marshbtnviewgradlevel = (Button) getView().findViewById(R.id.marshallbtnviewlevel);
+        marshviewerspin = (Spinner) getView().findViewById(R.id.marshallspinnnerlevel);
+        String[] gradyear = {"Select a year", "2018", "2017", "2016", "2015", "2014"};
+        ArrayAdapter<String> marshallleveladapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnerview, gradyear);
+        marshviewerspin.setAdapter(marshallleveladapter);
+        marsheditsearch = (EditText) getView().findViewById(R.id.marshalletquicksearch);
+        marshbtnsearch.setOnClickListener(this);
+        marshbtnviewall.setOnClickListener(this);
+        marshbtnviewgradlevel.setOnClickListener(this);
+    }
+
+    public void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED) {
             return;
         }
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == STORAGE_PERMISSION_CODE){
-            if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getActivity(),"Permission granted",Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(getActivity(),"Permission denied",Toast.LENGTH_LONG).show();
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "Permission granted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Permission denied", Toast.LENGTH_LONG).show();
             }
         }
     }
 
     @Override
     public void onClick(View view) {
-        if(view==buttonsearch){
-            if(editsearch.getText().toString().equals("")){
-                Toast.makeText(getContext(),"Fill in the Search Field",Toast.LENGTH_LONG).show();
-            }else{
-                progressDialog=new ProgressDialog(getContext());
+
+        marshallbuttonclicks();
+        if (view == buttonsearch) {
+            if (editsearch.getText().toString().equals("")) {
+                Toast.makeText(getContext(), "Fill in the Search Field", Toast.LENGTH_LONG).show();
+            } else {
+                progressDialog = new ProgressDialog(getContext());
                 progressDialog.setMessage("Searching....");
                 progressDialog.show();
                 progressDialog.setCancelable(false);
-                searchword= editsearch.getText().toString().trim().toUpperCase();
+                searchword = editsearch.getText().toString().trim().toUpperCase();
                 String check = "Search";
                 UrlConnectivity urlConnectivity = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
                     @Override
                     public void processfinish(String output) {
-                        if (output.contains("No Data Found")){
+                        if (output.contains("No Data Found")) {
                             progressDialog.dismiss();
-                            Toast.makeText(getContext(),"No Member was found",Toast.LENGTH_LONG).show();
-                        }
-                        else {
+                            Toast.makeText(getContext(), "No Member was found", Toast.LENGTH_LONG).show();
+                        } else {
                             progressDialog.dismiss();
                             Bundle bundle = new Bundle();
                             String urladress = "http://192.168.43.194/FB_DATA/searchmember.php";
-                            bundle.putString("valuekey",searchword);
+                            bundle.putString("valuekey", searchword);
                             bundle.putString("URL", urladress);
-                            Intent listv = new Intent(getContext(),Searchlist.class);
+                            Intent listv = new Intent(getContext(), Searchlist.class);
                             listv.putExtras(bundle);
                             startActivity(listv);
-                            Toast.makeText(getContext(),"Member Found",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Member Found", Toast.LENGTH_LONG).show();
 
-                            }
+                        }
                     }
                 }, check);
                 urlConnectivity.execute(searchword);
 
             }
         }
-        if(view==viewall){
+        if (view == viewall) {
             Bundle bundle = new Bundle();
             String urladress = "http://192.168.43.194/FB_DATA/viewallmembers.php";
-            bundle.putString("valuekey","");
+            bundle.putString("valuekey", "");
             bundle.putString("URL", urladress);
-            Intent listv = new Intent(getContext(),Searchlist.class);
+            Intent listv = new Intent(getContext(), Searchlist.class);
             listv.putExtras(bundle);
             startActivity(listv);
         }
 
-        if(view==btnviewlevel){
-            if(viewerspin.getSelectedItem().toString().equals("Select a Level")){
-                Toast.makeText(getContext(),"Select a Valid Level",Toast.LENGTH_LONG).show();
-            }else{
+        if (view == btnviewlevel) {
+            if (viewerspin.getSelectedItem().toString().equals("Select a Level")) {
+                Toast.makeText(getContext(), "Select a Valid Level", Toast.LENGTH_LONG).show();
+            } else {
                 Bundle bundle = new Bundle();
                 String urladress = "http://192.168.43.194/FB_DATA/viewmembersbylevel.php";
-                bundle.putString("valuekey",viewerspin.getSelectedItem().toString());
+                bundle.putString("valuekey", viewerspin.getSelectedItem().toString());
                 bundle.putString("URL", urladress);
-                Intent listv = new Intent(getContext(),Searchlist.class);
+                Intent listv = new Intent(getContext(), Searchlist.class);
                 listv.putExtras(bundle);
                 startActivity(listv);
+            }
+        }
+    }
+
+    private void marshallbuttonclicks() {
+        if (getView() == buttonsearch) {
+            if (marsheditsearch.getText().toString().equals("")) {
+                Toast.makeText(getContext(), "Fill in the Search Field", Toast.LENGTH_LONG).show();
+            } else {
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.setMessage("Searching....");
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+                marshallsearchword = marsheditsearch.getText().toString().trim().toUpperCase();
+                String check = "Search";
+                UrlConnectivity urlConnectivity = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
+                    @Override
+                    public void processfinish(String output) {
+                        if (output.contains("No Data Found")) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "No Member was found", Toast.LENGTH_LONG).show();
+                        } else {
+                            progressDialog.dismiss();
+                            Bundle bundle = new Bundle();
+                            String urladress = "http://192.168.43.194/FB_DATA/searchmember.php";
+                            bundle.putString("valuekey", searchword);
+                            bundle.putString("URL", urladress);
+                            Intent listv = new Intent(getContext(), Searchlist.class);
+                            listv.putExtras(bundle);
+                            startActivity(listv);
+                            Toast.makeText(getContext(), "Member Found", Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                }, check);
+                urlConnectivity.execute(searchword);
+
             }
         }
     }
