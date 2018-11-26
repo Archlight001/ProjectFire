@@ -35,7 +35,8 @@
         <activity android:name=".Member_Profile" />
         <activity android:name=".Image_FullScreen" />
         <activity android:name=".Searchlist" />
-        <activity android:name=".UpgradeMarshall"></activity>
+        <activity android:name=".UpgradeMarshall" />
+        <activity android:name=".Marshall_Profile"></activity>
     </application>
 
 </manifest>

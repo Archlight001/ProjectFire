@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-        marshallbuttonclicks();
+
         if (view == buttonsearch) {
             if (editsearch.getText().toString().equals("")) {
                 Toast.makeText(getContext(), "Fill in the Search Field", Toast.LENGTH_LONG).show();
@@ -134,6 +134,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             String urladress = "http://192.168.43.194/FB_DATA/searchmember.php";
                             bundle.putString("valuekey", searchword);
                             bundle.putString("URL", urladress);
+                            bundle.putString("TabName","Member");
                             Intent listv = new Intent(getContext(), Searchlist.class);
                             listv.putExtras(bundle);
                             startActivity(listv);
@@ -169,10 +170,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 startActivity(listv);
             }
         }
-    }
 
-    private void marshallbuttonclicks() {
-        if (getView() == buttonsearch) {
+        if (view == marshbtnsearch) {
             if (marsheditsearch.getText().toString().equals("")) {
                 Toast.makeText(getContext(), "Fill in the Search Field", Toast.LENGTH_LONG).show();
             } else {
@@ -182,7 +181,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 progressDialog.setCancelable(false);
                 marshallsearchword = marsheditsearch.getText().toString().trim().toUpperCase();
                 String check = "Search";
-                UrlConnectivity urlConnectivity = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
+                MarshUrlConnectivity urlConnectivity = new MarshUrlConnectivity(new MarshUrlConnectivity.AsyncResponse() {
                     @Override
                     public void processfinish(String output) {
                         if (output.contains("No Data Found")) {
@@ -191,9 +190,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         } else {
                             progressDialog.dismiss();
                             Bundle bundle = new Bundle();
-                            String urladress = "http://192.168.43.194/FB_DATA/searchmember.php";
-                            bundle.putString("valuekey", searchword);
+                            String urladress = "http://192.168.43.194/FB_DATA/searchmarshall.php";
+                            bundle.putString("valuekey", marshallsearchword);
                             bundle.putString("URL", urladress);
+                            bundle.putString("TabName","Marshall");
                             Intent listv = new Intent(getContext(), Searchlist.class);
                             listv.putExtras(bundle);
                             startActivity(listv);
@@ -202,9 +202,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         }
                     }
                 }, check);
-                urlConnectivity.execute(searchword);
+                urlConnectivity.execute(marshallsearchword);
 
             }
+
         }
     }
+
 }

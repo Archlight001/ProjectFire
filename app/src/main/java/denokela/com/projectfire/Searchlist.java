@@ -35,6 +35,7 @@ public class Searchlist extends AppCompatActivity implements AdapterView.OnItemC
     String line = null;
     String result = null;
     String grabbeddata;
+    String TabName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +44,7 @@ public class Searchlist extends AppCompatActivity implements AdapterView.OnItemC
         Bundle grab = getIntent().getExtras();
         grabbeddata= grab.get("valuekey").toString();
         urladdress = grab.get("URL").toString();
+        TabName = grab.getString("TabName");
         listView = (ListView) findViewById(R.id.profilelist);
 
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
@@ -136,10 +138,15 @@ public class Searchlist extends AppCompatActivity implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Bundle bundle = new Bundle();
-        bundle.putString("phonenumber", phonenumber[position]);
-        Intent intent = new Intent(this, Member_Profile.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+
+        if(TabName.equals("Member")) {
+            Bundle bundle = new Bundle();
+            bundle.putString("phonenumber", phonenumber[position]);
+            Intent intent = new Intent(this, Member_Profile.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }else if(TabName.equals("Marshall")){
+            Toast.makeText(getApplicationContext(),"No Profile Class for now", Toast.LENGTH_LONG).show();
+        }
     }
 }
