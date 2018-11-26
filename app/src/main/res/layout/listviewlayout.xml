@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="#8B0000"
+        android:padding="15dp">
+
+        <denokela.com.projectfire.CustomImageView
+            android:id="@+id/listimview"
+            android:layout_width="70dp"
+            android:layout_height="86dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/listviewimagebackground"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tvprofilename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="26dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@id/listimview"
+            android:layout_toRightOf="@id/listimview"
+            android:textColor="@color/White"
+            android:textStyle="bold"
+            android:textSize="22dp"
+            />
+
+    </RelativeLayout>
+</LinearLayout>
