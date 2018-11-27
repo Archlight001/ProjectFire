@@ -36,39 +36,39 @@ public class Searchlist extends AppCompatActivity implements AdapterView.OnItemC
     String result = null;
     String grabbeddata;
     String TabName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchlist);
 
         Bundle grab = getIntent().getExtras();
-        grabbeddata= grab.get("valuekey").toString();
+        grabbeddata = grab.get("valuekey").toString();
         urladdress = grab.get("URL").toString();
         TabName = grab.getString("TabName");
         listView = (ListView) findViewById(R.id.profilelist);
 
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
-        if(result.contains(grabbeddata)){
+        if (result.toLowerCase().contains(grabbeddata.toLowerCase())) {
             CustomListView customListView = new CustomListView(this, firstname, middlename, surname, imagepath);
             listView.setAdapter(customListView);
             listView.setOnItemClickListener(this);
 
-        }else {
-            Toast.makeText(this,"No Data Found",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Sorry an error Occured", Toast.LENGTH_LONG).show();
 
         }
 
     }
 
 
-    private void collectData()
-    {
+    private void collectData() {
 //Connection
-        try{
+        try {
 
-            URL url=new URL(urladdress);
-            HttpURLConnection con=(HttpURLConnection)url.openConnection();
+            URL url = new URL(urladdress);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setDoInput(true);
             con.setDoOutput(true);
@@ -81,54 +81,47 @@ public class Searchlist extends AppCompatActivity implements AdapterView.OnItemC
             bufferedWriter.flush();
             bufferedWriter.close();
             outputStream.close();
-            is=new BufferedInputStream(con.getInputStream());
+            is = new BufferedInputStream(con.getInputStream());
 
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         //content
-        try{
-            BufferedReader br=new BufferedReader(new InputStreamReader(is));
-            StringBuilder sb=new StringBuilder();
-            while ((line=br.readLine())!=null){
-                sb.append(line+"\n");
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
             }
             is.close();
-            result=sb.toString();
+            result = sb.toString();
 
 
-
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
 
         }
 
 //JSON
-        try{
+        try {
 
-            JSONArray ja=new JSONArray(result);
-            JSONObject jo=null;
-            firstname=new String[ja.length()];
-            middlename=new String[ja.length()];
+            JSONArray ja = new JSONArray(result);
+            JSONObject jo = null;
+            firstname = new String[ja.length()];
+            middlename = new String[ja.length()];
             surname = new String[ja.length()];
             phonenumber = new String[ja.length()];
-            imagepath=new String[ja.length()];
+            imagepath = new String[ja.length()];
 
-            for(int i=0;i<=ja.length();i++){
-                jo=ja.getJSONObject(i);
-                firstname[i]=jo.getString("First Name");
-                middlename[i]=jo.getString("Middle Name");
-                surname[i]=jo.getString("Surname");
-                phonenumber[i]=jo.getString("Phone Number");
-                imagepath[i]=jo.getString("Profile_pic url");
+            for (int i = 0; i <= ja.length(); i++) {
+                jo = ja.getJSONObject(i);
+                firstname[i] = jo.getString("First Name");
+                middlename[i] = jo.getString("Middle Name");
+                surname[i] = jo.getString("Surname");
+                phonenumber[i] = jo.getString("Phone Number");
+                imagepath[i] = jo.getString("Profile_pic url");
             }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
 
             ex.printStackTrace();
         }
@@ -139,14 +132,18 @@ public class Searchlist extends AppCompatActivity implements AdapterView.OnItemC
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-        if(TabName.equals("Member")) {
+        if (TabName.equals("Member")) {
             Bundle bundle = new Bundle();
             bundle.putString("phonenumber", phonenumber[position]);
             Intent intent = new Intent(this, Member_Profile.class);
             intent.putExtras(bundle);
             startActivity(intent);
-        }else if(TabName.equals("Marshall")){
-            Toast.makeText(getApplicationContext(),"No Profile Class for now", Toast.LENGTH_LONG).show();
+        } else if (TabName.equals("Marshall")) {
+            Bundle bundle = new Bundle();
+            bundle.putString("phonenumber", phonenumber[position]);
+            Intent intent = new Intent(this, Marshall_Profile.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 }

@@ -152,6 +152,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             String urladress = "http://192.168.43.194/FB_DATA/viewallmembers.php";
             bundle.putString("valuekey", "");
             bundle.putString("URL", urladress);
+            bundle.putString("TabName","Member");
             Intent listv = new Intent(getContext(), Searchlist.class);
             listv.putExtras(bundle);
             startActivity(listv);
@@ -165,6 +166,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 String urladress = "http://192.168.43.194/FB_DATA/viewmembersbylevel.php";
                 bundle.putString("valuekey", viewerspin.getSelectedItem().toString());
                 bundle.putString("URL", urladress);
+                bundle.putString("TabName","Member");
                 Intent listv = new Intent(getContext(), Searchlist.class);
                 listv.putExtras(bundle);
                 startActivity(listv);
@@ -206,6 +208,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             }
 
+        }
+        if (view == marshbtnviewgradlevel) {
+            if (marshviewerspin.getSelectedItem().toString().equals("Select a year")) {
+                Toast.makeText(getContext(), "Select a Valid Year", Toast.LENGTH_LONG).show();
+            } else {
+                Bundle bundle = new Bundle();
+                String urladress = "http://192.168.43.194/FB_DATA/viewmarshallsbylevel.php";
+                bundle.putString("valuekey", marshviewerspin.getSelectedItem().toString());
+                bundle.putString("URL", urladress);
+                bundle.putString("TabName","Marshall");
+                Intent listv = new Intent(getContext(), Searchlist.class);
+                listv.putExtras(bundle);
+                startActivity(listv);
+            }
+        }
+
+
+        if (view == marshbtnviewall) {
+            Bundle bundle = new Bundle();
+            String urladress = "http://192.168.43.194/FB_DATA/viewallmarshalls.php";
+            bundle.putString("valuekey", "");
+            bundle.putString("URL", urladress);
+            bundle.putString("TabName","Marshall");
+            Intent listv = new Intent(getContext(), Searchlist.class);
+            listv.putExtras(bundle);
+            startActivity(listv);
         }
     }
 

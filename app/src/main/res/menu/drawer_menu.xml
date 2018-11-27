@@ -8,14 +8,15 @@
             android:title="Home"></item>
         <item android:id="@+id/nav_add_member"
             android:title="Add Member"></item>
-        <item android:id="@+id/nav_delete_member"
-            android:title="Delete Member"></item>
-        <item android:id="@+id/nav_upgrade_member"
-            android:title="Upgrade to Field Marshall"></item>
+        <item android:id="@+id/nav_current_excos"
+            android:title="Current Excos"/>
+        <item android:id="@+id/nav_view_excos"
+            android:title="View Excos by Set"/>
+        <item android:id="@+id/nav_assign_excos"
+            android:title="Assign New Excos/Upgrade Database"/>
         <item android:id="@+id/adminprofile"
             android:title="Admin Profile"></item>
         <item android:id="@+id/nav_exit"
             android:title="Exit"></item>
     </group>
-
 </menu>
