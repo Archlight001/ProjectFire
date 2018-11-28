@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#8B0000"
-    tools:context=".CurrentExcos_List">
+    tools:context=".ListExcos_Set">
 
     <ListView
-        android:id="@+id/excoprofilelist"
+        android:id="@+id/excolistset"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true" />

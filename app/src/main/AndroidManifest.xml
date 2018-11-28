@@ -37,7 +37,9 @@
         <activity android:name=".Searchlist" />
         <activity android:name=".UpgradeMarshall" />
         <activity android:name=".Marshall_Profile" />
-        <activity android:name=".CurrentExcos_List"></activity>
+        <activity android:name=".CurrentExcos_List" />
+        <activity android:name=".Custom_Exco_Listview" />
+        <activity android:name=".ListExcos_Set"></activity>
     </application>
 
 </manifest>

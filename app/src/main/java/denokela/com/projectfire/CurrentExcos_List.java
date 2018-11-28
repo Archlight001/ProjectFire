@@ -30,6 +30,7 @@ public class CurrentExcos_List extends Fragment {
     String[] firstname;
     String[] middlename;
     String[] surname;
+    String [] post;
     String[] imagepath;
     String[] phonenumber;
     ListView listView;
@@ -51,7 +52,7 @@ public class CurrentExcos_List extends Fragment {
 
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
-        CustomListView customListView = new CustomListView(getActivity(), firstname, middlename, surname, imagepath);
+        Custom_Exco_Listview customListView = new Custom_Exco_Listview(getActivity(), firstname, middlename, surname,post,imagepath);
         listView.setAdapter(customListView);
 
     }
@@ -88,6 +89,7 @@ public class CurrentExcos_List extends Fragment {
             middlename = new String[ja.length()];
             surname = new String[ja.length()];
             phonenumber = new String[ja.length()];
+            post = new String[ja.length()];
             imagepath = new String[ja.length()];
 
             for (int i = 0; i <= ja.length(); i++) {
@@ -96,6 +98,7 @@ public class CurrentExcos_List extends Fragment {
                 middlename[i] = jo.getString("Middle Name");
                 surname[i] = jo.getString("Surname");
                 phonenumber[i] = jo.getString("Phone Number");
+                post[i] = jo.getString("Post");
                 imagepath[i] = jo.getString("Profile_pic url");
             }
         } catch (Exception ex) {
