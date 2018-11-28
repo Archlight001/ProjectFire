@@ -39,7 +39,8 @@
         <activity android:name=".Marshall_Profile" />
         <activity android:name=".CurrentExcos_List" />
         <activity android:name=".Custom_Exco_Listview" />
-        <activity android:name=".ListExcos_Set"></activity>
+        <activity android:name=".ListExcos_Set" />
+        <activity android:name=".CustomYearListView"></activity>
     </application>
 
 </manifest>
