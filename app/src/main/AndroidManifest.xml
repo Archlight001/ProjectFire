@@ -36,7 +36,8 @@
         <activity android:name=".Image_FullScreen" />
         <activity android:name=".Searchlist" />
         <activity android:name=".UpgradeMarshall" />
-        <activity android:name=".Marshall_Profile"></activity>
+        <activity android:name=".Marshall_Profile" />
+        <activity android:name=".CurrentExcos_List"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package denokela.com.projectfire;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -54,6 +55,9 @@ public class WelcomeScreen extends AppCompatActivity implements NavigationView.O
                 break;
             case R.id.nav_add_member:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new UserReg_Fragment()).commit();
+                break;
+            case R.id.nav_current_excos:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CurrentExcos_List()).commit();
                 break;
     }
         drawer.closeDrawer(GravityCompat.START);
