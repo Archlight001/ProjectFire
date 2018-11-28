@@ -1,15 +1,11 @@
 package denokela.com.projectfire;
 
 import android.content.Intent;
-import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.os.StrictMode;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,50 +23,64 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class CurrentExcos_List extends Fragment implements AdapterView.OnItemClickListener {
+public class ExcoListView_BySet extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    String[] firstname;
-    String[] middlename;
-    String[] surname;
-    String [] post;
-    String[] imagepath;
-    String[] phonenumber;
     ListView listView;
     BufferedInputStream is;
     String line = null;
     String result = null;
+    String grabbeddata;
+    String[] firstname;
+    String[] middlename;
+    String[] surname;
+    String[] post;
+    String[] imagepath;
+    String[] phonenumber;
 
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_current_excos__list, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        listView = (ListView) view.findViewById(R.id.excoprofilelist);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_current_excos__list);
+        Bundle grab = getIntent().getExtras();
+        grabbeddata = grab.get("year").toString();
+        listView = (ListView) findViewById(R.id.excoprofilelist);
 
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
-        Custom_Exco_Listview customListView = new Custom_Exco_Listview(getActivity(), firstname, middlename, surname,post,imagepath);
-        listView.setAdapter(customListView);
+        if (result.toLowerCase().contains(grabbeddata.toLowerCase())) {
+            Custom_Exco_Listview customListView = new Custom_Exco_Listview(this, firstname, middlename, surname, post, imagepath);
+            listView.setAdapter(customListView);
+        }else{
+            Toast.makeText(this, "No Exco found for this year", Toast.LENGTH_LONG).show();
+        }
         listView.setOnItemClickListener(this);
 
     }
-
-
     private void collectData() {
 //Connection
         try {
 
-            URL url = new URL("http://192.168.43.194/FB_DATA/viewcurrentexcos.php");
+            URL url = new URL("http://192.168.43.194/FB_DATA/listexcobyset.php");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setDoInput(true);
             con.setDoOutput(true);
+            OutputStream outputStream = con.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                    outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("Value", "UTF-8") + "=" +
+                    URLEncoder.encode(grabbeddata, "UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            outputStream.close();
             is = new BufferedInputStream(con.getInputStream());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        //content
+        try {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             StringBuilder sb = new StringBuilder();
             while ((line = br.readLine()) != null) {
@@ -79,8 +89,10 @@ public class CurrentExcos_List extends Fragment implements AdapterView.OnItemCli
             is.close();
             result = sb.toString();
 
+
         } catch (Exception ex) {
             ex.printStackTrace();
+
         }
 
 //JSON
@@ -101,7 +113,7 @@ public class CurrentExcos_List extends Fragment implements AdapterView.OnItemCli
                 middlename[i] = jo.getString("Middle Name");
                 surname[i] = jo.getString("Surname");
                 phonenumber[i] = jo.getString("Phone Number");
-                post[i] = jo.getString("Post");
+                post[i] = jo.getString("Served As");
                 imagepath[i] = jo.getString("Profile_pic url");
             }
         } catch (Exception ex) {
@@ -109,13 +121,14 @@ public class CurrentExcos_List extends Fragment implements AdapterView.OnItemCli
             ex.printStackTrace();
         }
 
+
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Bundle bundle = new Bundle();
         bundle.putString("phonenumber", phonenumber[i]);
-        Intent intent = new Intent(getContext(), Member_Profile.class);
+        Intent intent = new Intent(this, Marshall_Profile.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }

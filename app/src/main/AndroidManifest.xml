@@ -35,12 +35,11 @@
         <activity android:name=".Member_Profile" />
         <activity android:name=".Image_FullScreen" />
         <activity android:name=".Searchlist" />
-        <activity android:name=".UpgradeMarshall" />
         <activity android:name=".Marshall_Profile" />
         <activity android:name=".CurrentExcos_List" />
         <activity android:name=".Custom_Exco_Listview" />
         <activity android:name=".ListExcos_Set" />
-        <activity android:name=".CustomYearListView"></activity>
+        <activity android:name=".ExcoListView_BySet"></activity>
     </application>
 
 </manifest>
