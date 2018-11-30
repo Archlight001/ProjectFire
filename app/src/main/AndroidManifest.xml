@@ -39,7 +39,8 @@
         <activity android:name=".CurrentExcos_List" />
         <activity android:name=".Custom_Exco_Listview" />
         <activity android:name=".ListExcos_Set" />
-        <activity android:name=".ExcoListView_BySet"></activity>
+        <activity android:name=".ExcoListView_BySet" />
+        <activity android:name=".UpgradeDatabase"></activity>
     </application>
 
 </manifest>

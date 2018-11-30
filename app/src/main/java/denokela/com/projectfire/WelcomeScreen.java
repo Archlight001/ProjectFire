@@ -62,6 +62,9 @@ public class WelcomeScreen extends AppCompatActivity implements NavigationView.O
             case R.id.nav_view_excos:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ListExcos_Set()).commit();
                 break;
+            case R.id.nav_assign_excos:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new UpgradeDatabase()).commit();
+                break;
     }
         drawer.closeDrawer(GravityCompat.START);
         return true;
