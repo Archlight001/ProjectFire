@@ -181,6 +181,7 @@ public class UserReg_Fragment extends Fragment implements View.OnClickListener {
                     Intent intent = new Intent(getActivity(), Member_Profile.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
+
                 }
             });
             builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {

@@ -135,6 +135,29 @@ public class MarshUrlConnectivity  extends AsyncTask<String, Void, String> {
             }catch (Exception e){
                 e.printStackTrace();
             }
+        } else if(connecturl.equals("CheckRow")){
+            try{
+                String address="http://192.168.43.194/FB_DATA/checkexconumrows.php";
+                URL url = new URL(address);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String line = "";
+                String result = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         return null;

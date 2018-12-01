@@ -1,5 +1,6 @@
 package denokela.com.projectfire;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +29,9 @@ public class Member_Profile extends AppCompatActivity {
     String firstname,middlename,surname,phonenumber,bday,state,course,level,year,pic_url;
     CustomImageView profileimg;
 
+
+
+    ProgressDialog progressDialog;
     Bitmap bitmap;
 
     TextView tvfname,tvmname,tvsname,tvpnumber,tvbirthday,tvstate,tvcourse,tvlevel,tvyear;
@@ -37,7 +41,11 @@ public class Member_Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member__profile);
+        progressDialog = new ProgressDialog(this);
 
+        progressDialog.setMessage("Loading.......");
+        progressDialog.show();
+        progressDialog.setCancelable(false);
         final Bundle bundle = getIntent().getExtras();
         final String pnumber =bundle.getString("phonenumber");
 
@@ -73,6 +81,8 @@ public class Member_Profile extends AppCompatActivity {
                     tvcourse.setText(course);
                     tvlevel.setText(level);
                     tvyear.setText(year);
+
+                    progressDialog.dismiss();
 
                     profileimg.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -151,5 +161,6 @@ class GetImageFromURL extends AsyncTask<String,Void,Bitmap>
         imgView.setImageBitmap(bitmap);
 
     }
+
 
 }

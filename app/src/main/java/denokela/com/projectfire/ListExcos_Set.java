@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -33,7 +35,6 @@ public class ListExcos_Set extends Fragment implements AdapterView.OnItemClickLi
     String line = null;
     String result = null;
     String[] year;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,7 +45,6 @@ public class ListExcos_Set extends Fragment implements AdapterView.OnItemClickLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         list = (ListView) view.findViewById(R.id.excolistset);
-
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
         CustomYearListView customListView = new CustomYearListView(getActivity(), year);

@@ -11,11 +11,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-public class UpgradeDatabase extends Fragment {
+public class UpgradeDatabase extends Fragment implements View.OnClickListener {
     ProgressDialog progressDialog;
     AlertDialog alertDialog;
+
+
+    Spinner postspin;
+    Button memberbutton;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -23,49 +32,86 @@ public class UpgradeDatabase extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        memberbutton = (Button) view.findViewById(R.id.btnselectmember);
+        postspin = (Spinner) view.findViewById(R.id.spinnnerposts);
+        String[] posts = {"Select a Post", "Coordinator", "Deputy-Coordinator",
+                "Secretary", "Financial Secretary", "Treasurer", "Script 1",
+        "Script 2", "Technical 1", "Technical 2", "Stage 1", "Stage 2","Costume 1",
+        "Costume 2", "Prayer 1", "Prayer 2", "Security 1", "Security 2"};
+        ArrayAdapter<String> leveladapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnerview, posts);
+        postspin.setAdapter(leveladapter);
+        memberbutton.setOnClickListener(this);
         Bundle getnames = getActivity().getIntent().getExtras();
-        String uname = getnames.getString("Username");
-        String connecturl = "CheckAdminId";
+        final String uname = getnames.getString("Username");
+        final String connecturl = "CheckAdminId";
+        final String checkrow = "CheckRow";
         alertDialog = new AlertDialog.Builder(getContext()).create();
-        progressDialog=new ProgressDialog(getContext());
+        progressDialog = new ProgressDialog(getContext());
+
         progressDialog.setMessage("Processing.......");
         progressDialog.show();
         progressDialog.setCancelable(false);
-
-        MarshUrlConnectivity marshUrlConnectivity=new MarshUrlConnectivity(new MarshUrlConnectivity.AsyncResponse() {
+        MarshUrlConnectivity marshConnectivity = new MarshUrlConnectivity(new MarshUrlConnectivity.AsyncResponse() {
             @Override
             public void processfinish(String output) {
-                if(output.contains("Correct")){
-                    progressDialog.dismiss();
-                    Toast.makeText(getContext(),"Welcome",Toast.LENGTH_LONG).show();
-
-                }else{
-                    progressDialog.dismiss();
-                    alertDialog.setTitle("Restricted Access");
-                    alertDialog.setMessage("Sorry, You do not have the appropriate " +
-                            "clearance level to access this page. You will be Redirected back" +
-                            " to the Home page soon");
-                    alertDialog.show();
-                    alertDialog.setCancelable(false);
-                    final Thread redirect = new Thread(){
+                if (output.contains("17")) {
+                    MarshUrlConnectivity marshUrlConnectivity = new MarshUrlConnectivity(new MarshUrlConnectivity.AsyncResponse() {
                         @Override
-                        public void run() {
-                           try {
-                               sleep(3000);
-                           }catch (Exception e){
-                               e.printStackTrace();
-                           }finally {
-                               alertDialog.dismiss();
-                               getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
-                           }
+                        public void processfinish(String output) {
+                            if (output.contains("Correct")) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), "Welcome", Toast.LENGTH_LONG).show();
+                            } else {
+                                progressDialog.dismiss();
+                                alertDialog.setTitle("Restricted Access");
+                                alertDialog.setMessage("Sorry, You do not have the appropriate " +
+                                        "clearance level to access this page. You will be Redirected back" +
+                                        " to the Home page soon");
+                                alertDialog.show();
+                                alertDialog.setCancelable(false);
+                                final Thread redirect = new Thread() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            sleep(3000);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        } finally {
+                                            alertDialog.dismiss();
+                                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                                        }
+                                    }
+                                };
+                                redirect.start();
+                            }
                         }
-                    };
-                    redirect.start();
+                    }, connecturl);
+                    marshUrlConnectivity.execute(uname);
+                } else {
+                    progressDialog.dismiss();
                 }
             }
-        },connecturl);
-        marshUrlConnectivity.execute(uname);
+        }, checkrow);
+        marshConnectivity.execute();
+
+
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (postspin.getSelectedItem().toString().equals("Select a Pear")) {
+            Toast.makeText(getContext(), "Select a Valid Post", Toast.LENGTH_LONG).show();
+        }else{
+            Bundle bundle = new Bundle();
+            bundle.putString("valuepost", postspin.getSelectedItem().toString());
+            Intent listv = new Intent(getContext(), UpgradeList.class);
+            listv.putExtras(bundle);
+            startActivity(listv);
+        }
     }
 }
+
+

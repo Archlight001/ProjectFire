@@ -9,9 +9,10 @@
 
     <ImageView
         android:id="@+id/imageViewfullscreen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
          />
 </RelativeLayout>
