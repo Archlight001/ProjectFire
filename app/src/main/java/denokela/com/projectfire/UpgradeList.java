@@ -1,6 +1,9 @@
 package denokela.com.projectfire;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.StrictMode;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +38,8 @@ public class UpgradeList extends AppCompatActivity implements AdapterView.OnItem
     String result = null;
     String post;
 
+    AlertDialog.Builder alertDialog,sdialog;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,9 @@ public class UpgradeList extends AppCompatActivity implements AdapterView.OnItem
         urladdress = "http://192.168.43.194/FB_DATA/viewallmembers.php";
 
         listView = (ListView) findViewById(R.id.profilelist);
-
+        alertDialog = new AlertDialog.Builder(this);
+        sdialog = new AlertDialog.Builder(this);
+        progressDialog = new ProgressDialog(this);
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
         CustomListView customListView = new CustomListView(this, firstname, middlename, surname, imagepath);
@@ -105,7 +112,53 @@ public class UpgradeList extends AppCompatActivity implements AdapterView.OnItem
 
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+    public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
+        final String assign = "AssignExco";
+        alertDialog.setMessage("You are about to Assign "+ firstname[position] + " " + surname[position] +
+         " "+ "as the " +post + " of the Current House. Select Assign to continue the process " +
+                "or Exit to Terminate the process");
+        alertDialog.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+                progressDialog.setMessage("Processing.......");
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+                MarshorExcoUrlConnectivity marshorExcoUrlConnectivity = new MarshorExcoUrlConnectivity(new MarshorExcoUrlConnectivity.AsyncResponse() {
+                    @Override
+                    public void processfinish(String output) {
+                        progressDialog.dismiss();
+                        if(output.contains("Success")){
+                            sdialog.setTitle("Success");
+                            sdialog.setMessage("The post of " + post + " has been successfully assigned " +
+                                    "to "+ firstname[position] + " " + surname[position]);
+                            sdialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                    finish();
+                                }
+                            });
+                            sdialog.show();
+                            sdialog.setCancelable(false);
+
+                        }else if(output.contains("Sorry")){
+                            sdialog.setMessage(output);
+                            sdialog.show();
+                        }
+                    }
+                },assign);
+                marshorExcoUrlConnectivity.execute(post,phonenumber[position]);
+            }
+        });
+        alertDialog.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        alertDialog.show();
+        alertDialog.setCancelable(false);
 
     }
 }

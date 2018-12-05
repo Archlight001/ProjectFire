@@ -12,7 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class MarshUrlConnectivity  extends AsyncTask<String, Void, String> {
+public class MarshorExcoUrlConnectivity extends AsyncTask<String, Void, String> {
 
     String connecturl,pnumber;
 
@@ -22,7 +22,7 @@ public class MarshUrlConnectivity  extends AsyncTask<String, Void, String> {
     public AsyncResponse delegate=null;
 
 
-    public MarshUrlConnectivity(AsyncResponse delegate, String connecturl) {
+    public MarshorExcoUrlConnectivity(AsyncResponse delegate, String connecturl) {
         this.delegate = delegate;
         this.connecturl=connecturl;
     }
@@ -158,6 +158,44 @@ public class MarshUrlConnectivity  extends AsyncTask<String, Void, String> {
             }catch (Exception e){
                 e.printStackTrace();
             }
+        }else if (connecturl.equals("AssignExco")){
+            String post = params[0];
+            String phonenumber = params[1];
+            try{
+                String address="http://192.168.43.194/FB_DATA/insertexco.php";
+                URL url = new URL(address);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                        outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("Post", "UTF-8") + "=" +
+                        URLEncoder.encode(post, "UTF-8") + "&" + URLEncoder.encode("PhoneNumber", "UTF-8") + "=" +
+                        URLEncoder.encode(phonenumber, "UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String line = "";
+                String result = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
 
         return null;

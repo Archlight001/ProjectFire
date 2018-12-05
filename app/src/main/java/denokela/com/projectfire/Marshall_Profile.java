@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,7 +33,7 @@ public class Marshall_Profile extends AppCompatActivity {
 
         String retrieve = "RetrieveData";
 
-        MarshUrlConnectivity urlConnectivity = new MarshUrlConnectivity(new MarshUrlConnectivity.AsyncResponse() {
+        MarshorExcoUrlConnectivity urlConnectivity = new MarshorExcoUrlConnectivity(new MarshorExcoUrlConnectivity.AsyncResponse() {
             @Override
             public void processfinish(String output) {
                 try{

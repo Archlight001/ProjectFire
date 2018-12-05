@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,11 +52,11 @@ public class UpgradeDatabase extends Fragment implements View.OnClickListener {
         progressDialog.setMessage("Processing.......");
         progressDialog.show();
         progressDialog.setCancelable(false);
-        MarshUrlConnectivity marshConnectivity = new MarshUrlConnectivity(new MarshUrlConnectivity.AsyncResponse() {
+        MarshorExcoUrlConnectivity marshConnectivity = new MarshorExcoUrlConnectivity(new MarshorExcoUrlConnectivity.AsyncResponse() {
             @Override
             public void processfinish(String output) {
                 if (output.contains("17")) {
-                    MarshUrlConnectivity marshUrlConnectivity = new MarshUrlConnectivity(new MarshUrlConnectivity.AsyncResponse() {
+                    MarshorExcoUrlConnectivity marshorExcoUrlConnectivity = new MarshorExcoUrlConnectivity(new MarshorExcoUrlConnectivity.AsyncResponse() {
                         @Override
                         public void processfinish(String output) {
                             if (output.contains("Correct")) {
@@ -88,7 +87,7 @@ public class UpgradeDatabase extends Fragment implements View.OnClickListener {
                             }
                         }
                     }, connecturl);
-                    marshUrlConnectivity.execute(uname);
+                    marshorExcoUrlConnectivity.execute(uname);
                 } else {
                     progressDialog.dismiss();
                 }

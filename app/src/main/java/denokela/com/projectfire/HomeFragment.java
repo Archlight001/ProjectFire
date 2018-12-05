@@ -183,7 +183,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 progressDialog.setCancelable(false);
                 marshallsearchword = marsheditsearch.getText().toString().trim().toUpperCase();
                 String check = "Search";
-                MarshUrlConnectivity urlConnectivity = new MarshUrlConnectivity(new MarshUrlConnectivity.AsyncResponse() {
+                MarshorExcoUrlConnectivity urlConnectivity = new MarshorExcoUrlConnectivity(new MarshorExcoUrlConnectivity.AsyncResponse() {
                     @Override
                     public void processfinish(String output) {
                         if (output.contains("No Data Found")) {
