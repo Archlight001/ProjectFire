@@ -54,11 +54,14 @@ public class CurrentExcos_List extends Fragment implements AdapterView.OnItemCli
 
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
-        Custom_Exco_Listview customListView = new Custom_Exco_Listview(getActivity(), firstname, middlename, surname,post,imagepath);
-        listView.setAdapter(customListView);
-        listView.setOnItemClickListener(this);
-
-    }
+        if(!result.contains("No Data Found") && result!=null && !result.contains("null")) {
+            Custom_Exco_Listview customListView = new Custom_Exco_Listview(getActivity(), firstname, middlename, surname, post, imagepath);
+            listView.setAdapter(customListView);
+            listView.setOnItemClickListener(this);
+        }else{
+            Toast.makeText(getContext(),"No Data Found", Toast.LENGTH_LONG).show();
+        }
+}
 
 
     private void collectData() {
