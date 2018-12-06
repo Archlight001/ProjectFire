@@ -2,22 +2,26 @@ package denokela.com.projectfire;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 public class UpgradeDatabase extends Fragment implements View.OnClickListener {
     ProgressDialog progressDialog;
     AlertDialog alertDialog;
+    AlertDialog.Builder sDialog,withinsdialog;
 
 
     Spinner postspin;
@@ -47,6 +51,8 @@ public class UpgradeDatabase extends Fragment implements View.OnClickListener {
         final String connecturl = "CheckAdminId";
         final String checkrow = "CheckRow";
         alertDialog = new AlertDialog.Builder(getContext()).create();
+        sDialog = new AlertDialog.Builder(getContext());
+        withinsdialog = new AlertDialog.Builder(getContext());
         progressDialog = new ProgressDialog(getContext());
 
         progressDialog.setMessage("Processing.......");
@@ -61,7 +67,69 @@ public class UpgradeDatabase extends Fragment implements View.OnClickListener {
                         public void processfinish(String output) {
                             if (output.contains("Correct")) {
                                 progressDialog.dismiss();
-                                Toast.makeText(getContext(), "Welcome", Toast.LENGTH_LONG).show();
+                                sDialog.setTitle("Upgrade");
+                                sDialog.setMessage("You are about to upgrade the Database of the app. Note" +
+                                        " that this process is irreversible.Kindly Press Ok to Enter your Administrative " +
+                                        "ID and Continue");
+                                sDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                        withinsdialog.setTitle("Input your Administrative ID");
+                                        final EditText input = new EditText(getContext());
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                                        input.setInputType(InputType.TYPE_CLASS_TEXT);
+                                        withinsdialog.setView(input);
+                                        withinsdialog.setPositiveButton("Upgrade", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                progressDialog.setMessage("Upgrading Database");
+                                                progressDialog.show();
+                                                progressDialog.setCancelable(false);
+                                                String adminid = input.getText().toString().trim().toUpperCase();
+                                                Bundle names = getActivity().getIntent().getExtras();
+                                                String Username = names.getString("Username");
+                                                String Password = names.getString("Password");
+                                                String check = "CheckAdmin";
+                                                UrlConnectivity urlConnectivity = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
+                                                    @Override
+                                                    public void processfinish(String output) {
+                                                        if (output.contains("Correct admin ID")){
+                                                            MarshorExcoUrlConnectivity upgrade = new MarshorExcoUrlConnectivity(new MarshorExcoUrlConnectivity.AsyncResponse() {
+                                                                @Override
+                                                                public void processfinish(String output) {
+                                                                    if(output.contains("Done")){
+                                                                        progressDialog.dismiss();
+                                                                        Toast.makeText(getContext(), "Database Upgraded Successfully", Toast.LENGTH_LONG).show();
+
+                                                                    }else{
+                                                                        progressDialog.dismiss();
+                                                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                                                                        Toast.makeText(getContext(), "Something went wrong Try again later", Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                }
+                                                            },"Upgrade");
+                                                            upgrade.execute();
+
+                                                        }
+                                                        else {
+                                                            progressDialog.dismiss();
+                                                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                                                            Toast.makeText(getContext(), "Incorrect Admin ID", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }
+                                                }, check);
+                                                urlConnectivity.execute(adminid, Username, Password);
+
+                                            }
+                                        });
+                                        withinsdialog.show();
+                                        withinsdialog.setCancelable(false);
+
+                                    }
+                                });
+                                sDialog.show();
+                                sDialog.setCancelable(false);
                             } else {
                                 progressDialog.dismiss();
                                 alertDialog.setTitle("Restricted Access");
@@ -101,7 +169,7 @@ public class UpgradeDatabase extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (postspin.getSelectedItem().toString().equals("Select a Pear")) {
+        if (postspin.getSelectedItem().toString().equals("Select a Post")) {
             Toast.makeText(getContext(), "Select a Valid Post", Toast.LENGTH_LONG).show();
         }else{
             Bundle bundle = new Bundle();
