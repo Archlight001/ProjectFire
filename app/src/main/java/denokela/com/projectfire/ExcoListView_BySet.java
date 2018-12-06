@@ -113,7 +113,7 @@ public class ExcoListView_BySet extends AppCompatActivity implements AdapterView
                 middlename[i] = jo.getString("Middle Name");
                 surname[i] = jo.getString("Surname");
                 phonenumber[i] = jo.getString("Phone Number");
-                post[i] = jo.getString("Served As");
+                post[i] = jo.getString("Post");
                 imagepath[i] = jo.getString("Profile_pic url");
             }
         } catch (Exception ex) {
@@ -121,15 +121,33 @@ public class ExcoListView_BySet extends AppCompatActivity implements AdapterView
             ex.printStackTrace();
         }
 
-
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Bundle bundle = new Bundle();
-        bundle.putString("phonenumber", phonenumber[i]);
-        Intent intent = new Intent(this, Marshall_Profile.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+    public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+
+        MarshorExcoUrlConnectivity checkphonenum = new MarshorExcoUrlConnectivity(new MarshorExcoUrlConnectivity.AsyncResponse() {
+            @Override
+            public void processfinish(String output) {
+                 if(output.contains("Marshall")) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("phonenumber", phonenumber[i]);
+                    Intent intent = new Intent(getApplicationContext(), Marshall_Profile.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }else if(output.contains("Member")){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("phonenumber", phonenumber[i]);
+                    Intent intent = new Intent(getApplicationContext(), Member_Profile.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }else{
+                     Toast.makeText(getApplicationContext(),"Can't open now. Try again later", Toast.LENGTH_LONG).show();
+                 }
+            }
+        }, "CheckPhoneNumber");
+        checkphonenum.execute(phonenumber[i]);
+
+
     }
 }
