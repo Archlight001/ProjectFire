@@ -31,18 +31,12 @@
         <activity android:name=".AdminRegistration" />
         <activity android:name=".ForgottenPassword" />
         <activity android:name=".WelcomeScreen" />
-        <activity android:name=".UserReg_Fragment" />
         <activity android:name=".Member_Profile" />
         <activity android:name=".Image_FullScreen" />
         <activity android:name=".Searchlist" />
         <activity android:name=".Marshall_Profile" />
-        <activity android:name=".CurrentExcos_List" />
-        <activity android:name=".Custom_Exco_Listview" />
-        <activity android:name=".ListExcos_Set" />
         <activity android:name=".ExcoListView_BySet" />
-        <activity android:name=".UpgradeDatabase" />
         <activity android:name=".UpgradeList" />
-        <activity android:name=".Birthdays_Of_The_Month"></activity>
     </application>
 
 </manifest>
