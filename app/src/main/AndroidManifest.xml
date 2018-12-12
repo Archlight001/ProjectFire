@@ -41,7 +41,8 @@
         <activity android:name=".ListExcos_Set" />
         <activity android:name=".ExcoListView_BySet" />
         <activity android:name=".UpgradeDatabase" />
-        <activity android:name=".UpgradeList"></activity>
+        <activity android:name=".UpgradeList" />
+        <activity android:name=".Birthdays_Of_The_Month"></activity>
     </application>
 
 </manifest>

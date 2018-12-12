@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="#8B0000"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/bday_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:textColor="@color/White"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/bday_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bday_profile_name"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/White"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/bday_unitstatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/moreinfo"
+            android:layout_toRightOf="@+id/bday_profile_name"
+            android:gravity="right"
+            android:textColor="@color/White"
+            android:textSize="18dp"
+            android:text="Member"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/moreinfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bday_profile_name"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/bday_date"
+            android:gravity="right"
+            android:text="Tap for profile info"
+            android:textColor="@color/White"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+</LinearLayout>
