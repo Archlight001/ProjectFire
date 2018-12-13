@@ -1,5 +1,8 @@
 package denokela.com.projectfire;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,7 +10,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,6 +24,8 @@ public class Marshall_Profile extends AppCompatActivity {
     BufferedInputStream is;
     String firstname,middlename,surname,phonenumber,bday,state,course,servedas,year,pic_url;
     CustomImageView profileimg;
+
+    ImageButton copycontent;
 
     Bitmap bitmap;
 
@@ -74,6 +81,16 @@ public class Marshall_Profile extends AppCompatActivity {
                             startActivity(sharedIntent);
                         }
                     });
+                    copycontent.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ClipboardManager clipboardManager= (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("Phone Number copied",phonenumber);
+                            clipboardManager.setPrimaryClip(clip);
+                            Toast.makeText(getApplicationContext(), "Phone Number Copied", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
 
 
                 }
@@ -102,6 +119,7 @@ public class Marshall_Profile extends AppCompatActivity {
         tvservedas = (TextView) findViewById(R.id.marshallprofile_served);
         tvyear = (TextView) findViewById(R.id.marshallprofile_year);
         tvbirthday= (TextView) findViewById(R.id.marshallprofile_birthday);
+        copycontent = (ImageButton) findViewById(R.id.marshcopycontent);
     }
 
 
