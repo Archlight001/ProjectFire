@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8B0000"
+    android:background="@drawable/finebackground"
     android:padding="10dp"
     tools:context=".Member_Profile">
 

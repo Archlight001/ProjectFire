@@ -4,36 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fire"
     android:padding="15dp"
-    android:background="#8B0000"
     tools:context=".LoginScreen">
-
 
 
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="174dp"
-        android:textColor="#FFFFFF"
+        android:background="@drawable/edittext_bg"
         android:ems="10"
+        android:hint="Username"
+        android:ellipsize="start"
+        android:gravity="center"
         android:inputType="textPersonName"
-        android:hint="Username" />
+        android:textColor="#FFFFFF" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
-        android:textColor="#FFFFFF"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_below="@id/etUsername"
-        android:layout_marginTop="35dp"
         android:layout_centerInParent="true"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/edittext_bg"
         android:ems="10"
-        android:inputType="textPassword"
+        android:ellipsize="start"
+        android:gravity="center"
         android:hint="Password"
-        />
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -42,22 +46,22 @@
         android:layout_below="@id/etPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
-        android:text="Log in"
-        android:textColor="#FFFFFF"
         android:background="@drawable/button_bg"
         android:onClick="LogIn"
-        />
+        android:text="Log in"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/etUsername"
         android:layout_below="@id/btnLogin"
-        android:background="@android:color/transparent"
+        android:layout_alignEnd="@+id/etUsername"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/edittext_bg"
         android:text="Register"
-        android:textColor="#FFFFFF"
-        android:textStyle="italic" />
+        android:textColor="#FFF8DC"
+        android:textStyle="italic|bold" />
 
     <Button
         android:id="@+id/btnForgtPass"
@@ -65,9 +69,9 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/etUsername"
         android:layout_alignTop="@+id/btnRegister"
-        android:background="@android:color/transparent"
+        android:background="@drawable/edittext_bg"
         android:text="Forgotten Password?"
-        android:textColor="#FFFFFF"
-        android:textStyle="italic" />
+        android:textColor="#FFF8DC"
+        android:textStyle="italic|bold" />
 
 </RelativeLayout>

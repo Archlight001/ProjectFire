@@ -50,12 +50,18 @@ public class Searchlist extends AppCompatActivity implements AdapterView.OnItemC
 
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
-        if (result.toLowerCase().contains(grabbeddata.toLowerCase())) {
+        if(result!=null){
+        if (result.toLowerCase().contains(grabbeddata.toLowerCase())  && !result.contains("null")) {
             CustomListView customListView = new CustomListView(this, firstname, middlename, surname, imagepath);
             listView.setAdapter(customListView);
             listView.setOnItemClickListener(this);
 
         } else {
+            Toast.makeText(this, "Couldn't locate data", Toast.LENGTH_LONG).show();
+        }
+
+
+    } else {
             Toast.makeText(this, "Sorry an error Occured", Toast.LENGTH_LONG).show();
 
         }

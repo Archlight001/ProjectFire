@@ -89,7 +89,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         marshbtnviewall = (Button) getView().findViewById(R.id.marshallbtnviewall);
         marshbtnviewgradlevel = (Button) getView().findViewById(R.id.marshallbtnviewlevel);
         marshviewerspin = (Spinner) getView().findViewById(R.id.marshallspinnnerlevel);
-        String[] gradyear = {"Select a year", "2018", "2017", "2016", "2015", "2014"};
+        String[] gradyear = {"Select a year", "2010", "2011", "2012", "2013", "2014","2015"
+        ,"2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027"
+        ,"2028","2029","2030"};
         ArrayAdapter<String> marshallleveladapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnerview, gradyear);
         marshviewerspin.setAdapter(marshallleveladapter);
         marsheditsearch = (EditText) getView().findViewById(R.id.marshalletquicksearch);
@@ -135,6 +137,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 UrlConnectivity urlConnectivity = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
                     @Override
                     public void processfinish(String output) {
+                       if(output!=null){
                         if (output.contains("No Data Found")) {
                             progressDialog.dismiss();
                             Toast.makeText(getContext(), "No Member was found", Toast.LENGTH_LONG).show();
@@ -150,7 +153,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             startActivity(listv);
                             Toast.makeText(getContext(), "Member Found", Toast.LENGTH_LONG).show();
 
-                        }
+                        }}else{
+                           progressDialog.dismiss();
+                           Toast.makeText(getContext(),"Sorry an Error Occured",Toast.LENGTH_LONG).show();
+                       }
                     }
                 }, check);
                 urlConnectivity.execute(searchword);
@@ -196,6 +202,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 MarshorExcoUrlConnectivity urlConnectivity = new MarshorExcoUrlConnectivity(new MarshorExcoUrlConnectivity.AsyncResponse() {
                     @Override
                     public void processfinish(String output) {
+                       if(output!=null){
                         if (output.contains("No Data Found")) {
                             progressDialog.dismiss();
                             Toast.makeText(getContext(), "No Member was found", Toast.LENGTH_LONG).show();
@@ -211,7 +218,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             startActivity(listv);
                             Toast.makeText(getContext(), "Member Found", Toast.LENGTH_LONG).show();
 
-                        }
+                        }}else{
+                           progressDialog.dismiss();
+                           Toast.makeText(getContext(),"Sorry an Error Occured",Toast.LENGTH_LONG).show();
+                       }
                     }
                 }, check);
                 urlConnectivity.execute(marshallsearchword);

@@ -47,11 +47,14 @@ public class ExcoListView_BySet extends AppCompatActivity implements AdapterView
 
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
+        if(result!=null){
         if (result.toLowerCase().contains(grabbeddata.toLowerCase())) {
             Custom_Exco_Listview customListView = new Custom_Exco_Listview(this, firstname, middlename, surname, post, imagepath);
             listView.setAdapter(customListView);
         }else{
             Toast.makeText(this, "No Exco found for this year", Toast.LENGTH_LONG).show();
+        }}else{
+            Toast.makeText(this,"Sorry an Error Occured",Toast.LENGTH_LONG).show();
         }
         listView.setOnItemClickListener(this);
 

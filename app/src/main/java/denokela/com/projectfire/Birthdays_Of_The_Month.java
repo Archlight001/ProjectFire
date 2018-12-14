@@ -54,18 +54,22 @@ public class Birthdays_Of_The_Month extends Fragment implements AdapterView.OnIt
         listView = (ListView) view.findViewById(R.id.excoprofilelist);
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
+        if(result !=null){
         for(int y=0;y<phonenumber.length;y++){
             getstatus(phonenumber[y],y);
 
         }
         sortData();
 
-        if(!result.contains("No Data Found") && result!=null && !result.contains("null")) {
+        if(!result.contains("No Data Found")) {
             Custom_Birthdays_Listview customListView = new Custom_Birthdays_Listview(getActivity(), firstname, middlename, surname, bday, bmonth,unitstatus);
             listView.setAdapter(customListView);
             listView.setOnItemClickListener(this);
         }else{
             Toast.makeText(getContext(),"No Birthdays for this Month", Toast.LENGTH_LONG).show();
+        }}else{
+            Toast.makeText(getContext(),"Sorry an Error Occured",Toast.LENGTH_LONG).show();
+
         }
     }
 

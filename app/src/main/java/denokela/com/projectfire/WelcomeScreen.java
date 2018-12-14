@@ -2,6 +2,7 @@ package denokela.com.projectfire;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 public class WelcomeScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
+    private Boolean doubleBacktoExitPressedOnce= false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +89,18 @@ public class WelcomeScreen extends AppCompatActivity implements NavigationView.O
         if(drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
         }else{
-            super.onBackPressed();
+            if(doubleBacktoExitPressedOnce){
+                super.onBackPressed();
+                return;
+            }
+            this.doubleBacktoExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBacktoExitPressedOnce=false;
+                }
+            },2000);
         }
     }
 
@@ -116,7 +129,10 @@ public class WelcomeScreen extends AppCompatActivity implements NavigationView.O
                 finish();
                 break;
     }
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

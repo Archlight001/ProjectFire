@@ -55,10 +55,14 @@ public class UpgradeList extends AppCompatActivity implements AdapterView.OnItem
         progressDialog = new ProgressDialog(this);
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
-        CustomListView customListView = new CustomListView(this, firstname, middlename, surname, imagepath);
+        if(result!=null) {
+            CustomListView customListView = new CustomListView(this, firstname, middlename, surname, imagepath);
             listView.setAdapter(customListView);
             listView.setOnItemClickListener(this);
+        }else{
+            Toast.makeText(this,"Sorry an Error Occured",Toast.LENGTH_LONG).show();
 
+        }
     }
 
     private void collectData() {

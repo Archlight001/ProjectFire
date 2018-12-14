@@ -43,6 +43,7 @@ public class Marshall_Profile extends AppCompatActivity {
         MarshorExcoUrlConnectivity urlConnectivity = new MarshorExcoUrlConnectivity(new MarshorExcoUrlConnectivity.AsyncResponse() {
             @Override
             public void processfinish(String output) {
+                if(output!=null){
                 try{
                     JSONArray ja=new JSONArray(output);
                     JSONObject jo=ja.getJSONObject(0);
@@ -100,7 +101,9 @@ public class Marshall_Profile extends AppCompatActivity {
                     ex.printStackTrace();
                 }
 
-            }
+            }else{
+                    Toast.makeText(getApplicationContext(),"Sorry an Error Occured",Toast.LENGTH_LONG).show();
+                }}
         },retrieve);
 
         urlConnectivity.execute(pnumber);

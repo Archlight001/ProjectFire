@@ -47,10 +47,13 @@ public class ListExcos_Set extends Fragment implements AdapterView.OnItemClickLi
         list = (ListView) view.findViewById(R.id.excolistset);
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
-        CustomYearListView customListView = new CustomYearListView(getActivity(), year);
-        list.setAdapter(customListView);
-        list.setOnItemClickListener(this);
-
+        if(result!=null) {
+            CustomYearListView customListView = new CustomYearListView(getActivity(), year);
+            list.setAdapter(customListView);
+            list.setOnItemClickListener(this);
+        }else{
+            Toast.makeText(getContext(),"Sorry an Error Occured",Toast.LENGTH_LONG).show();
+        }
     }
 
     private void collectData() {
@@ -95,15 +98,24 @@ public class ListExcos_Set extends Fragment implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Bundle bundle = new Bundle();
-        bundle.putString("year",adapterView.getItemAtPosition(position).toString()
-        );
-        Intent intent = new Intent(getContext(), ExcoListView_BySet.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        if(adapterView.getItemAtPosition(position).toString().equals(year[year.length-1])
+                ){
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CurrentExcos_List()).commit();
 
+
+        }else {
+
+            Bundle bundle = new Bundle();
+            bundle.putString("year", adapterView.getItemAtPosition(position).toString()
+            );
+            Intent intent = new Intent(getContext(), ExcoListView_BySet.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
 
 
 
     }
+
+
 }
