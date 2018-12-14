@@ -22,97 +22,98 @@ import java.io.InputStream;
 
 public class Marshall_Profile extends AppCompatActivity {
     BufferedInputStream is;
-    String firstname,middlename,surname,phonenumber,bday,state,course,servedas,year,pic_url;
+    String firstname, middlename, surname, phonenumber, bday, state, course, servedas, year, pic_url;
     CustomImageView profileimg;
 
     ImageButton copycontent;
 
     Bitmap bitmap;
 
-    TextView tvfname,tvmname,tvsname,tvpnumber,tvbirthday,tvstate,tvcourse,tvservedas,tvyear;
+    TextView tvfname, tvmname, tvsname, tvpnumber, tvbirthday, tvstate, tvcourse, tvservedas, tvyear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marshall__profile);
         final Bundle bundle = getIntent().getExtras();
-        final String pnumber =bundle.getString("phonenumber");
+        final String pnumber = bundle.getString("phonenumber");
 
         String retrieve = "RetrieveData";
 
         MarshorExcoUrlConnectivity urlConnectivity = new MarshorExcoUrlConnectivity(new MarshorExcoUrlConnectivity.AsyncResponse() {
             @Override
             public void processfinish(String output) {
-                if(output!=null){
-                try{
-                    JSONArray ja=new JSONArray(output);
-                    JSONObject jo=ja.getJSONObject(0);
+                if (output != null) {
+                    try {
+                        JSONArray ja = new JSONArray(output);
+                        JSONObject jo = ja.getJSONObject(0);
 
-                    firstname=jo.getString("First Name");
-                    middlename=jo.getString("Middle Name");
-                    surname = jo.getString("Surname");
-                    phonenumber=jo.getString("Phone Number");
-                    bday =jo.getString("Birthday Day") + " "+ jo.getString("Birthday Month");
-                    state= jo.getString("State of Origin");
-                    course =jo.getString("Course");
-                    servedas= jo.getString("Served As");
-                    year = jo.getString("Year Graduated");
-                    pic_url = jo.getString("Profile_pic url");
-                    profileimg = (CustomImageView) findViewById(R.id.marshallprofileimage);
-                    new GrabImageFromURL(profileimg).execute(pic_url);
-                    initialize();
-                    tvfname.setText(firstname);
-                    tvmname.setText(middlename);
-                    tvsname.setText(surname);
-                    tvpnumber.setText(phonenumber);
-                    tvbirthday.setText(bday);
-                    tvstate.setText(state);
-                    tvcourse.setText(course);
-                    tvservedas.setText(servedas);
-                    tvyear.setText(year);
+                        firstname = jo.getString("First Name");
+                        middlename = jo.getString("Middle Name");
+                        surname = jo.getString("Surname");
+                        phonenumber = jo.getString("Phone Number");
+                        bday = jo.getString("Birthday Day") + " " + jo.getString("Birthday Month");
+                        state = jo.getString("State of Origin");
+                        course = jo.getString("Course");
+                        servedas = jo.getString("Served As");
+                        year = jo.getString("Year Graduated");
+                        pic_url = jo.getString("Profile_pic url");
+                        profileimg = (CustomImageView) findViewById(R.id.marshallprofileimage);
+                        new GrabImageFromURL(profileimg).execute(pic_url);
+                        initialize();
+                        tvfname.setText(firstname);
+                        tvmname.setText(middlename);
+                        tvsname.setText(surname);
+                        tvpnumber.setText(phonenumber);
+                        tvbirthday.setText(bday);
+                        tvstate.setText(state);
+                        tvcourse.setText(course);
+                        tvservedas.setText(servedas);
+                        tvyear.setText(year);
 
-                    profileimg.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                        profileimg.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
 
-                            Intent sharedIntent = new Intent(getApplicationContext(), Image_FullScreen.class);
-                            Bundle bundler= new Bundle();
-                            bundler.putString("picurl",pic_url);
-                            sharedIntent.putExtras(bundler);
-                            startActivity(sharedIntent);
-                        }
-                    });
-                    copycontent.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            ClipboardManager clipboardManager= (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText("Phone Number copied",phonenumber);
-                            clipboardManager.setPrimaryClip(clip);
-                            Toast.makeText(getApplicationContext(), "Phone Number Copied", Toast.LENGTH_SHORT).show();
+                                Intent sharedIntent = new Intent(getApplicationContext(), Image_FullScreen.class);
+                                Bundle bundler = new Bundle();
+                                bundler.putString("picurl", pic_url);
+                                bundler.putString("fname", firstname);
+                                bundler.putString("sname", surname);
 
-                        }
-                    });
+                                sharedIntent.putExtras(bundler);
+                                startActivity(sharedIntent);
+                            }
+                        });
+                        copycontent.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                                ClipData clip = ClipData.newPlainText("Phone Number copied", phonenumber);
+                                clipboardManager.setPrimaryClip(clip);
+                                Toast.makeText(getApplicationContext(), "Phone Number Copied", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
 
 
+                    } catch (Exception ex) {
+
+                        ex.printStackTrace();
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Sorry an Error Occured", Toast.LENGTH_LONG).show();
                 }
-                catch (Exception ex)
-                {
-
-                    ex.printStackTrace();
-                }
-
-            }else{
-                    Toast.makeText(getApplicationContext(),"Sorry an Error Occured",Toast.LENGTH_LONG).show();
-                }}
-        },retrieve);
+            }
+        }, retrieve);
 
         urlConnectivity.execute(pnumber);
 
 
-
     }
 
-    public void initialize(){
+    public void initialize() {
         tvfname = (TextView) findViewById(R.id.marshallprofile_first_name);
         tvmname = (TextView) findViewById(R.id.marshallprofile_middle_name);
         tvsname = (TextView) findViewById(R.id.marshallprofile_surname);
@@ -121,35 +122,33 @@ public class Marshall_Profile extends AppCompatActivity {
         tvcourse = (TextView) findViewById(R.id.marshallprofile_course);
         tvservedas = (TextView) findViewById(R.id.marshallprofile_served);
         tvyear = (TextView) findViewById(R.id.marshallprofile_year);
-        tvbirthday= (TextView) findViewById(R.id.marshallprofile_birthday);
+        tvbirthday = (TextView) findViewById(R.id.marshallprofile_birthday);
         copycontent = (ImageButton) findViewById(R.id.marshcopycontent);
     }
 
 
-    }
+}
 
-class GrabImageFromURL extends AsyncTask<String,Void,Bitmap>
-{
+class GrabImageFromURL extends AsyncTask<String, Void, Bitmap> {
     Bitmap bitmap;
 
     CustomImageView imgView;
-    public GrabImageFromURL(CustomImageView imgv)
-    {
-        this.imgView=imgv;
+
+    public GrabImageFromURL(CustomImageView imgv) {
+        this.imgView = imgv;
     }
+
     @Override
     protected Bitmap doInBackground(String... url) {
 
-        String urldisplay=url[0];
-        bitmap=null;
+        String urldisplay = url[0];
+        bitmap = null;
 
-        try{
+        try {
 
-            InputStream ist=new java.net.URL(urldisplay).openStream();
-            bitmap= BitmapFactory.decodeStream(ist);
-        }
-        catch (Exception ex)
-        {
+            InputStream ist = new java.net.URL(urldisplay).openStream();
+            bitmap = BitmapFactory.decodeStream(ist);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -157,7 +156,7 @@ class GrabImageFromURL extends AsyncTask<String,Void,Bitmap>
     }
 
     @Override
-    protected void onPostExecute(Bitmap bitmap){
+    protected void onPostExecute(Bitmap bitmap) {
 
         super.onPostExecute(bitmap);
         imgView.setImageBitmap(bitmap);

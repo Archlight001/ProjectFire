@@ -52,10 +52,10 @@ public class UpgradeDatabase extends Fragment implements View.OnClickListener {
         final String uname = getnames.getString("Username");
         final String connecturl = "CheckAdminId";
         final String checkrow = "CheckRow";
-        alertDialog = new AlertDialog.Builder(getContext()).create();
-        sDialog = new AlertDialog.Builder(getContext());
-        withinsdialog = new AlertDialog.Builder(getContext());
-        progressDialog = new ProgressDialog(getContext());
+        alertDialog = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme).create();
+        sDialog = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
+        withinsdialog = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
+        progressDialog = new ProgressDialog(getContext(),R.style.MyDialogTheme);
 
         progressDialog.setMessage("Processing.......");
         progressDialog.show();

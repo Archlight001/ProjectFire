@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ProgressBar;
@@ -185,7 +187,7 @@ public class DataBank extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute() {
-        progressDialog = new ProgressDialog(context);
+        progressDialog = new ProgressDialog(context,R.style.MyDialogTheme);
         progressDialog.setTitle("Status");
         progressDialog.setMessage("Please Wait");
         progressDialog.show();
@@ -201,7 +203,7 @@ public class DataBank extends AsyncTask<String, Void, String> {
         }
         progressDialog.cancel();
 
-        alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog = new AlertDialog.Builder(context,R.style.MyDialogTheme).create();
         alertDialog.setTitle("Status");
         alertDialog.setMessage(result);
         alertDialog.show();

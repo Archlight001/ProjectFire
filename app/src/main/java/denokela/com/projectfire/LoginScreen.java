@@ -1,5 +1,6 @@
 package denokela.com.projectfire;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +13,10 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 public class LoginScreen extends AppCompatActivity {
-    EditText username,password;
-    Button LogIn,Register,FrgtPass;
+    EditText username, password;
+    Button LogIn, Register, FrgtPass;
 
-    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,15 +24,14 @@ public class LoginScreen extends AppCompatActivity {
         username = (EditText) findViewById(R.id.etUsername);
         password = (EditText) findViewById(R.id.etPassword);
         LogIn = (Button) findViewById(R.id.btnLogin);
-        progressDialog = new ProgressDialog(this);
 
 
         //Register New Admin Activity Start
-        Register= (Button) findViewById(R.id.btnRegister);
+        Register = (Button) findViewById(R.id.btnRegister);
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginScreen.this,AdminRegistration.class));
+                startActivity(new Intent(LoginScreen.this, AdminRegistration.class));
                 finish();
             }
         });
@@ -50,23 +50,22 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     public void LogIn(View view) {
-        progressDialog.setMessage("Logging User In");
-        progressDialog.show();
 
-           String user_name = username.getText().toString().trim();
-           String pass_word = password.getText().toString().trim();
 
-            if (user_name.equals("") || pass_word.equals("")) {
-                progressDialog.dismiss();
-                Toast.makeText(this, "Please Fill all Fields", Toast.LENGTH_LONG).show();
-            } else {
-                String type = "Login";
-                DataBank data = new DataBank(this);
-                data.execute(type, user_name, pass_word);
-                progressDialog.dismiss();
+        String user_name = username.getText().toString().trim();
+        String pass_word = password.getText().toString().trim();
 
-            }
-        }
+        if (user_name.equals("") || pass_word.equals("")) {
+
+            Toast.makeText(this, "Please Fill all Fields", Toast.LENGTH_LONG).show();
+        } else {
+            String type = "Login";
+            DataBank data = new DataBank(this);
+            data.execute(type, user_name, pass_word);
+
 
         }
+    }
+
+}
 

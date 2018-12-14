@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -29,9 +31,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final int STORAGE_PERMISSION_CODE = 125;
     TextView nametview;
     Button buttonsearch, viewall, btnviewlevel, marshbtnsearch, marshbtnviewall, marshbtnviewgradlevel;
-    EditText editsearch,marsheditsearch;
+    EditText editsearch, marsheditsearch;
     ProgressDialog progressDialog;
-    String searchword,marshallsearchword;
+    String searchword, marshallsearchword;
     Spinner viewerspin, marshviewerspin;
     TabHost tabHost;
 
@@ -72,10 +74,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         Bundle getnames = getActivity().getIntent().getExtras();
         String names = getnames.getString("Name");
 
-        SharedPreferences sharedpref= getActivity().getSharedPreferences("UserInfo",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor =sharedpref.edit();
-        editor.putString("Username",getnames.getString("Username"));
-        editor.putString("Password",getnames.getString("Password"));
+        SharedPreferences sharedpref = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpref.edit();
+        editor.putString("Username", getnames.getString("Username"));
+        editor.putString("Password", getnames.getString("Password"));
         editor.apply();
 
         nametview.setText(names);
@@ -89,9 +91,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         marshbtnviewall = (Button) getView().findViewById(R.id.marshallbtnviewall);
         marshbtnviewgradlevel = (Button) getView().findViewById(R.id.marshallbtnviewlevel);
         marshviewerspin = (Spinner) getView().findViewById(R.id.marshallspinnnerlevel);
-        String[] gradyear = {"Select a year", "2010", "2011", "2012", "2013", "2014","2015"
-        ,"2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027"
-        ,"2028","2029","2030"};
+        String[] gradyear = {"Select a year", "2010", "2011", "2012", "2013", "2014", "2015"
+                , "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027"
+                , "2028", "2029", "2030"};
         ArrayAdapter<String> marshallleveladapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnerview, gradyear);
         marshviewerspin.setAdapter(marshallleveladapter);
         marsheditsearch = (EditText) getView().findViewById(R.id.marshalletquicksearch);
@@ -129,6 +131,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(getContext(), "Fill in the Search Field", Toast.LENGTH_LONG).show();
             } else {
                 progressDialog = new ProgressDialog(getContext());
+                progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.RED));
                 progressDialog.setMessage("Searching....");
                 progressDialog.show();
                 progressDialog.setCancelable(false);
@@ -137,26 +140,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 UrlConnectivity urlConnectivity = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
                     @Override
                     public void processfinish(String output) {
-                       if(output!=null){
-                        if (output.contains("No Data Found")) {
-                            progressDialog.dismiss();
-                            Toast.makeText(getContext(), "No Member was found", Toast.LENGTH_LONG).show();
+                        if (output != null) {
+                            if (output.contains("No Data Found")) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), "No Member was found", Toast.LENGTH_LONG).show();
+                            } else {
+                                progressDialog.dismiss();
+                                Bundle bundle = new Bundle();
+                                String urladress = "http://192.168.43.194/FB_DATA/searchmember.php";
+                                bundle.putString("valuekey", searchword);
+                                bundle.putString("URL", urladress);
+                                bundle.putString("TabName", "Member");
+                                Intent listv = new Intent(getContext(), Searchlist.class);
+                                listv.putExtras(bundle);
+                                startActivity(listv);
+                                Toast.makeText(getContext(), "Member Found", Toast.LENGTH_LONG).show();
+
+                            }
                         } else {
                             progressDialog.dismiss();
-                            Bundle bundle = new Bundle();
-                            String urladress = "http://192.168.43.194/FB_DATA/searchmember.php";
-                            bundle.putString("valuekey", searchword);
-                            bundle.putString("URL", urladress);
-                            bundle.putString("TabName","Member");
-                            Intent listv = new Intent(getContext(), Searchlist.class);
-                            listv.putExtras(bundle);
-                            startActivity(listv);
-                            Toast.makeText(getContext(), "Member Found", Toast.LENGTH_LONG).show();
-
-                        }}else{
-                           progressDialog.dismiss();
-                           Toast.makeText(getContext(),"Sorry an Error Occured",Toast.LENGTH_LONG).show();
-                       }
+                            Toast.makeText(getContext(), "Sorry an Error Occured", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }, check);
                 urlConnectivity.execute(searchword);
@@ -168,7 +172,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             String urladress = "http://192.168.43.194/FB_DATA/viewallmembers.php";
             bundle.putString("valuekey", "");
             bundle.putString("URL", urladress);
-            bundle.putString("TabName","Member");
+            bundle.putString("TabName", "Member");
             Intent listv = new Intent(getContext(), Searchlist.class);
             listv.putExtras(bundle);
             startActivity(listv);
@@ -182,7 +186,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 String urladress = "http://192.168.43.194/FB_DATA/viewmembersbylevel.php";
                 bundle.putString("valuekey", viewerspin.getSelectedItem().toString());
                 bundle.putString("URL", urladress);
-                bundle.putString("TabName","Member");
+                bundle.putString("TabName", "Member");
                 Intent listv = new Intent(getContext(), Searchlist.class);
                 listv.putExtras(bundle);
                 startActivity(listv);
@@ -193,7 +197,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             if (marsheditsearch.getText().toString().equals("")) {
                 Toast.makeText(getContext(), "Fill in the Search Field", Toast.LENGTH_LONG).show();
             } else {
-                progressDialog = new ProgressDialog(getContext());
+                progressDialog = new ProgressDialog(getContext(),R.style.MyDialogTheme);
                 progressDialog.setMessage("Searching....");
                 progressDialog.show();
                 progressDialog.setCancelable(false);
@@ -202,26 +206,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 MarshorExcoUrlConnectivity urlConnectivity = new MarshorExcoUrlConnectivity(new MarshorExcoUrlConnectivity.AsyncResponse() {
                     @Override
                     public void processfinish(String output) {
-                       if(output!=null){
-                        if (output.contains("No Data Found")) {
-                            progressDialog.dismiss();
-                            Toast.makeText(getContext(), "No Member was found", Toast.LENGTH_LONG).show();
+                        if (output != null) {
+                            if (output.contains("No Data Found")) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), "No Member was found", Toast.LENGTH_LONG).show();
+                            } else {
+                                progressDialog.dismiss();
+                                Bundle bundle = new Bundle();
+                                String urladress = "http://192.168.43.194/FB_DATA/searchmarshall.php";
+                                bundle.putString("valuekey", marshallsearchword);
+                                bundle.putString("URL", urladress);
+                                bundle.putString("TabName", "Marshall");
+                                Intent listv = new Intent(getContext(), Searchlist.class);
+                                listv.putExtras(bundle);
+                                startActivity(listv);
+                                Toast.makeText(getContext(), "Member Found", Toast.LENGTH_LONG).show();
+
+                            }
                         } else {
                             progressDialog.dismiss();
-                            Bundle bundle = new Bundle();
-                            String urladress = "http://192.168.43.194/FB_DATA/searchmarshall.php";
-                            bundle.putString("valuekey", marshallsearchword);
-                            bundle.putString("URL", urladress);
-                            bundle.putString("TabName","Marshall");
-                            Intent listv = new Intent(getContext(), Searchlist.class);
-                            listv.putExtras(bundle);
-                            startActivity(listv);
-                            Toast.makeText(getContext(), "Member Found", Toast.LENGTH_LONG).show();
-
-                        }}else{
-                           progressDialog.dismiss();
-                           Toast.makeText(getContext(),"Sorry an Error Occured",Toast.LENGTH_LONG).show();
-                       }
+                            Toast.makeText(getContext(), "Sorry an Error Occured", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }, check);
                 urlConnectivity.execute(marshallsearchword);
@@ -237,7 +242,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 String urladress = "http://192.168.43.194/FB_DATA/viewmarshallsbylevel.php";
                 bundle.putString("valuekey", marshviewerspin.getSelectedItem().toString());
                 bundle.putString("URL", urladress);
-                bundle.putString("TabName","Marshall");
+                bundle.putString("TabName", "Marshall");
                 Intent listv = new Intent(getContext(), Searchlist.class);
                 listv.putExtras(bundle);
                 startActivity(listv);
@@ -250,7 +255,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             String urladress = "http://192.168.43.194/FB_DATA/viewallmarshalls.php";
             bundle.putString("valuekey", "");
             bundle.putString("URL", urladress);
-            bundle.putString("TabName","Marshall");
+            bundle.putString("TabName", "Marshall");
             Intent listv = new Intent(getContext(), Searchlist.class);
             listv.putExtras(bundle);
             startActivity(listv);

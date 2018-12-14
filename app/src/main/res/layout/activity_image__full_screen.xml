@@ -6,7 +6,14 @@
     android:layout_height="match_parent"
     android:background="#000000"
     tools:context=".Image_FullScreen">
-
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_file_download"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:onClick="DownloadImage"
+        />
     <ImageView
         android:id="@+id/imageViewfullscreen"
         android:layout_width="350dp"

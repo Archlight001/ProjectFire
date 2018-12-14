@@ -98,21 +98,21 @@ public class UserReg_Fragment extends Fragment implements View.OnClickListener {
         uploaddata = (Button) view.findViewById(R.id.btnUsrRegister);
         uploaddata.setOnClickListener(this);
         uploadpic.setOnClickListener(this);
-        progressDialog = new ProgressDialog(getContext());
+        progressDialog = new ProgressDialog(getContext(),R.style.MyDialogTheme);
     }
 
     private void initializespanner(View view) {
         stateoforigin = (Spinner) view.findViewById(R.id.spinstateoforigin);
-        String[] items = {"State of Origin", "Abia","Adamawa","Akwa-Ibom","Anambra","Bauchi","Bayelsa",
-                "Benue","Borno","Cross_River","Delta","Ebonyi","Edo","Ekiti","Enugu","Gombe",
-        "Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nassarawa",
-        "Niger","ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara","F.C.T Abuja"};
+        String[] items = {"State of Origin", "Abia", "Adamawa", "Akwa-Ibom", "Anambra", "Bauchi", "Bayelsa",
+                "Benue", "Borno", "Cross_River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Gombe",
+                "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nassarawa",
+                "Niger", "ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara", "F.C.T Abuja"};
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnerview, items);
         stateoforigin.setAdapter(arrayAdapter);
 
         yearjoined = (Spinner) view.findViewById(R.id.spinyearjoined);
-        String[] years = {"Year joined", "2015", "2016", "2017", "2018","2019","2020"
-        ,"2021","2022","2023","2024","2025","2026","2027","2028","2029","2030"};
+        String[] years = {"Year joined", "2015", "2016", "2017", "2018", "2019", "2020"
+                , "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"};
         ArrayAdapter<String> yeararrayadpter = new ArrayAdapter<String>(getActivity(), R.layout.spinnerview, years);
         yearjoined.setAdapter(yeararrayadpter);
 
@@ -122,20 +122,19 @@ public class UserReg_Fragment extends Fragment implements View.OnClickListener {
         currentlevel.setAdapter(leveladapter);
 
         birthdayday = (Spinner) view.findViewById(R.id.spinbirthdayday);
-        String[] days = {"Day", "1", "2","3","4","5","6","7","8","9","10",
-                "11","12","13","14","15","16","17","18","19","20","21","22","23"
-                ,"24","25","26","27","28","29","30","31"};
+        String[] days = {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+                "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"
+                , "24", "25", "26", "27", "28", "29", "30", "31"};
         ArrayAdapter<String> bdayadapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnerview, days);
         birthdayday.setAdapter(bdayadapter);
 
         birthdaymonth = (Spinner) view.findViewById(R.id.spinbirthdaymonth);
-        String[] month = {"Month", "January", "February", "March","April","May","June","July"
-        ,"August","September","October","November","December"};
+        String[] month = {"Month", "January", "February", "March", "April", "May", "June", "July"
+                , "August", "September", "October", "November", "December"};
         ArrayAdapter<String> bmonthadapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnerview, month);
         birthdaymonth.setAdapter(bmonthadapter);
 
     }
-
 
 
     public void convertinput() {
@@ -153,7 +152,6 @@ public class UserReg_Fragment extends Fragment implements View.OnClickListener {
     }
 
     public void uploadMultipart() {
-
 
 
         try {
@@ -235,7 +233,7 @@ public class UserReg_Fragment extends Fragment implements View.OnClickListener {
             //prepare for uploads. Use an Http library like Retrofit, Volley or async-http-client (My favourite)
 
             File file = compressed.get(0);
-            filepath=file.getPath();
+            filepath = file.getPath();
             Log.d("ImageCompressor", "New photo size ==> " + file.length()); //log new file size.
 
             profilepic.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
@@ -307,24 +305,25 @@ public class UserReg_Fragment extends Fragment implements View.OnClickListener {
                 progressDialog.show();
                 progressDialog.setCancelable(false);
                 String adminid = input.getText().toString().trim().toUpperCase();
-                SharedPreferences getpref = getActivity().getSharedPreferences("UserInfo",Context.MODE_PRIVATE);
-                String Username = getpref.getString("Username","");
-                String Password = getpref.getString("Password","");
+                SharedPreferences getpref = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                String Username = getpref.getString("Username", "");
+                String Password = getpref.getString("Password", "");
                 String check = "CheckAdmin";
 
                 UrlConnectivity urlConnectivity = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
                     @Override
                     public void processfinish(String output) {
-                       if(output!=null){
-                        if (output.contains("Correct admin ID"))
-                            checkduplicate();
-                        else {
+                        if (output != null) {
+                            if (output.contains("Correct admin ID"))
+                                checkduplicate();
+                            else {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), "Incorrect Admin ID", Toast.LENGTH_LONG).show();
+                            }
+                        } else {
                             progressDialog.dismiss();
-                            Toast.makeText(getContext(), "Incorrect Admin ID", Toast.LENGTH_LONG).show();
-                        }}else{
-                           progressDialog.dismiss();
-                           Toast.makeText(getContext(),"Sorry an Error Occured",Toast.LENGTH_LONG).show();
-                       }
+                            Toast.makeText(getContext(), "Sorry an Error Occured", Toast.LENGTH_LONG).show();
+                        }
 
                     }
                 }, check);
@@ -350,17 +349,18 @@ public class UserReg_Fragment extends Fragment implements View.OnClickListener {
         UrlConnectivity urlConnectivity = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
             @Override
             public void processfinish(String output) {
-                if(output!=null){
-                if (output.contains("Duplicate Data Found")) {
-                    progressDialog.dismiss();
-                    Toast.makeText(getContext(), "Duplicate Data Found", Toast.LENGTH_SHORT).show();
-                } else if (output.contains("Phone Number has Already Been Used")) {
-                    progressDialog.dismiss();
-                    Toast.makeText(getContext(), "Phone Number has Already Been Used", Toast.LENGTH_LONG).show();
-                } else if (output.contains("None")) {
-                    uploadMultipart();
-                }}else{
-                    Toast.makeText(getContext(),"Sorry an Error Occured",Toast.LENGTH_LONG).show();
+                if (output != null) {
+                    if (output.contains("Duplicate Data Found")) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "Duplicate Data Found", Toast.LENGTH_SHORT).show();
+                    } else if (output.contains("Phone Number has Already Been Used")) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "Phone Number has Already Been Used", Toast.LENGTH_LONG).show();
+                    } else if (output.contains("None")) {
+                        uploadMultipart();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Sorry an Error Occured", Toast.LENGTH_LONG).show();
                 }
 
             }

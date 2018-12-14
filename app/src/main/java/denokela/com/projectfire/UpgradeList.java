@@ -50,9 +50,9 @@ public class UpgradeList extends AppCompatActivity implements AdapterView.OnItem
         urladdress = "http://192.168.43.194/FB_DATA/viewallmembers.php";
 
         listView = (ListView) findViewById(R.id.profilelist);
-        alertDialog = new AlertDialog.Builder(this);
-        sdialog = new AlertDialog.Builder(this);
-        progressDialog = new ProgressDialog(this);
+        alertDialog = new AlertDialog.Builder(this,R.style.MyDialogTheme);
+        sdialog = new AlertDialog.Builder(this,R.style.MyDialogTheme);
+        progressDialog = new ProgressDialog(this,R.style.MyDialogTheme);
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder().permitNetwork().build()));
         collectData();
         if(result!=null) {

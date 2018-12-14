@@ -56,8 +56,8 @@ public class WelcomeScreen extends AppCompatActivity implements NavigationView.O
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.baradmin_id:
-                final AlertDialog adminidalert= new AlertDialog.Builder(this).create();
-                final ProgressDialog progressDialog= new ProgressDialog(this);
+                final AlertDialog adminidalert= new AlertDialog.Builder(this,R.style.MyDialogTheme).create();
+                final ProgressDialog progressDialog= new ProgressDialog(this,R.style.MyDialogTheme);
                 progressDialog.setMessage("Getting Administrative ID...");
                 progressDialog.show();
                 progressDialog.setCancelable(false);
@@ -120,7 +120,7 @@ public class WelcomeScreen extends AppCompatActivity implements NavigationView.O
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ListExcos_Set()).commit();
                 break;
             case R.id.nav_assign_excos:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new UpgradeDatabase()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UpgradeDatabase()).commit();
                 break;
             case R.id.nav_bdays:
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Birthdays_Of_The_Month()).commit();

@@ -1,7 +1,6 @@
 package denokela.com.projectfire;
 
 
-
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -16,17 +15,18 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class UrlConnectivity extends AsyncTask<String, Void, String> {
-    String connecturl, username, password, adminid,fname,sname,mname,pnumber;
+    String connecturl, username, password, adminid, fname, sname, mname, pnumber;
     Context context;
 
     public interface AsyncResponse {
         void processfinish(String output);
     }
-    public AsyncResponse delegate=null;
+
+    public AsyncResponse delegate = null;
 
     public UrlConnectivity(AsyncResponse delegate, String connecturl) {
         this.delegate = delegate;
-        this.connecturl=connecturl;
+        this.connecturl = connecturl;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                 adminid = params[0];
 
                 try {
-                    String address= "http://192.168.43.194/FB_DATA/checkadmin.php";
+                    String address = "http://192.168.43.194/FB_DATA/checkadmin.php";
                     URL url = new URL(address);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -76,14 +76,14 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                     e.printStackTrace();
                 }
 
-            }else if (connecturl.equals("CheckDuplicate")) {
+            } else if (connecturl.equals("CheckDuplicate")) {
                 fname = params[0];
                 mname = params[1];
                 sname = params[2];
                 pnumber = params[3];
 
-                try{
-                    String address="http://192.168.43.194/FB_DATA/checkduplicate.php";
+                try {
+                    String address = "http://192.168.43.194/FB_DATA/checkduplicate.php";
                     URL url = new URL(address);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -97,7 +97,7 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                             URLEncoder.encode("middlename", "UTF-8") + "=" +
                             URLEncoder.encode(mname, "UTF-8") + "&" +
                             URLEncoder.encode("surname", "UTF-8") + "=" +
-                            URLEncoder.encode(sname, "UTF-8")+ "&" +
+                            URLEncoder.encode(sname, "UTF-8") + "&" +
                             URLEncoder.encode("phonenumber", "UTF-8") + "=" +
                             URLEncoder.encode(pnumber, "UTF-8");
                     bufferedWriter.write(post_data);
@@ -118,14 +118,14 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                     httpURLConnection.disconnect();
                     return result;
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else if (connecturl.equals("RetrieveData")) {
+            } else if (connecturl.equals("RetrieveData")) {
                 pnumber = params[0];
 
-                try{
-                    String address="http://192.168.43.194/FB_DATA/member_profile.php";
+                try {
+                    String address = "http://192.168.43.194/FB_DATA/member_profile.php";
                     URL url = new URL(address);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -154,13 +154,13 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                     httpURLConnection.disconnect();
                     return result;
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else if(connecturl.equals("Search")){
+            } else if (connecturl.equals("Search")) {
                 String searchkey = params[0];
-                try{
-                    String address="http://192.168.43.194/FB_DATA/searchmember.php";
+                try {
+                    String address = "http://192.168.43.194/FB_DATA/searchmember.php";
                     URL url = new URL(address);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -189,15 +189,14 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                     httpURLConnection.disconnect();
                     return result;
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            else if(connecturl.equals("GetAdmin")){
+            } else if (connecturl.equals("GetAdmin")) {
                 String Username = params[0];
                 String Password = params[1];
-                try{
-                    String address="http://192.168.43.194/FB_DATA/getadminid.php";
+                try {
+                    String address = "http://192.168.43.194/FB_DATA/getadminid.php";
                     URL url = new URL(address);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -207,7 +206,7 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                     BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
                             outputStream, "UTF-8"));
                     String post_data = URLEncoder.encode("Username", "UTF-8") + "=" +
-                            URLEncoder.encode(Username, "UTF-8")+ "&" +
+                            URLEncoder.encode(Username, "UTF-8") + "&" +
                             URLEncoder.encode("Password", "UTF-8") + "=" +
                             URLEncoder.encode(Password, "UTF-8");
                     bufferedWriter.write(post_data);
@@ -228,16 +227,15 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                     httpURLConnection.disconnect();
                     return result;
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            else if(connecturl.equals("EditDetails")){
+            } else if (connecturl.equals("EditDetails")) {
                 String PhoneNumber = params[0];
                 String Field = params[1];
                 String New_data = params[2];
-                try{
-                    String address="http://192.168.43.194/FB_DATA/editmemberdetails.php";
+                try {
+                    String address = "http://192.168.43.194/FB_DATA/editmemberdetails.php";
                     URL url = new URL(address);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -247,9 +245,9 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                     BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
                             outputStream, "UTF-8"));
                     String post_data = URLEncoder.encode("PhoneNumber", "UTF-8") + "=" +
-                            URLEncoder.encode(PhoneNumber, "UTF-8")+ "&" +
+                            URLEncoder.encode(PhoneNumber, "UTF-8") + "&" +
                             URLEncoder.encode("Field", "UTF-8") + "=" +
-                            URLEncoder.encode(Field, "UTF-8")+ "&" +
+                            URLEncoder.encode(Field, "UTF-8") + "&" +
                             URLEncoder.encode("NewData", "UTF-8") + "=" +
                             URLEncoder.encode(New_data, "UTF-8");
                     bufferedWriter.write(post_data);
@@ -270,13 +268,13 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                     httpURLConnection.disconnect();
                     return result;
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else if(connecturl.equals("Log")){
+            } else if (connecturl.equals("Log")) {
                 String Log = params[0];
-                try{
-                    String address="http://192.168.43.194/FB_DATA/logs.php";
+                try {
+                    String address = "http://192.168.43.194/FB_DATA/logs.php";
                     URL url = new URL(address);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -305,14 +303,14 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                     httpURLConnection.disconnect();
                     return result;
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
 
             return null;
-            }
+        }
 
     }
 

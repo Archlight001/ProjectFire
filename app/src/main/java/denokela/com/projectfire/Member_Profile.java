@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -44,7 +45,7 @@ public class Member_Profile extends AppCompatActivity {
     String firstname, middlename, surname, phonenumber, bday, state, course, level, year, pic_url;
     CustomImageView profileimg;
     ImageButton contentcopy;
-    AlertDialog.Builder bdialog,adialog,cdialog;
+    AlertDialog.Builder bdialog, adialog, cdialog;
 
     ProgressDialog progressDialog;
     Bitmap bitmap;
@@ -57,82 +58,85 @@ public class Member_Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member__profile);
-        progressDialog = new ProgressDialog(this);
-        bdialog = new AlertDialog.Builder(this);
-        adialog= new AlertDialog.Builder(this);
-        cdialog= new AlertDialog.Builder(this);
+        progressDialog = new ProgressDialog(this,R.style.MyDialogTheme);
+        bdialog = new AlertDialog.Builder(this,R.style.MyDialogTheme);
+        adialog = new AlertDialog.Builder(this,R.style.MyDialogTheme);
+        cdialog = new AlertDialog.Builder(this,R.style.MyDialogTheme);
         progressDialog.setMessage("Processing.......");
         progressDialog.show();
         progressDialog.setCancelable(false);
-         bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
         final String pnumber = bundle.getString("phonenumber");
-        getpref = getSharedPreferences("UserInfo",Context.MODE_PRIVATE);
+        getpref = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         String retrieve = "RetrieveData";
 
         UrlConnectivity urlConnectivity = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
             @Override
             public void processfinish(String output) {
-                if(output!=null){
-                try {
-                    JSONArray ja = new JSONArray(output);
-                    JSONObject jo = ja.getJSONObject(0);
+                if (output != null) {
+                    try {
+                        JSONArray ja = new JSONArray(output);
+                        JSONObject jo = ja.getJSONObject(0);
 
-                    firstname = jo.getString("First Name");
-                    middlename = jo.getString("Middle Name");
-                    surname = jo.getString("Surname");
-                    phonenumber = jo.getString("Phone Number");
-                    bday = jo.getString("Birthday Day") + " " + jo.getString("Birthday Month");
-                    state = jo.getString("State of Origin");
-                    course = jo.getString("Course");
-                    level = jo.getString("Level");
-                    year = jo.getString("Year Joined");
-                    pic_url = jo.getString("Profile_pic url");
-                    profileimg = (CustomImageView) findViewById(R.id.profileimage);
-                    new GetImageFromURL(profileimg).execute(pic_url);
-                    initialize();
-                    tvfname.setText(firstname);
-                    tvmname.setText(middlename);
-                    tvsname.setText(surname);
-                    tvpnumber.setText(phonenumber);
-                    tvbirthday.setText(bday);
-                    tvstate.setText(state);
-                    tvcourse.setText(course);
-                    tvlevel.setText(level);
-                    tvyear.setText(year);
+                        firstname = jo.getString("First Name");
+                        middlename = jo.getString("Middle Name");
+                        surname = jo.getString("Surname");
+                        phonenumber = jo.getString("Phone Number");
+                        bday = jo.getString("Birthday Day") + " " + jo.getString("Birthday Month");
+                        state = jo.getString("State of Origin");
+                        course = jo.getString("Course");
+                        level = jo.getString("Level");
+                        year = jo.getString("Year Joined");
+                        pic_url = jo.getString("Profile_pic url");
+                        profileimg = (CustomImageView) findViewById(R.id.profileimage);
+                        new GetImageFromURL(profileimg).execute(pic_url);
+                        initialize();
+                        tvfname.setText(firstname);
+                        tvmname.setText(middlename);
+                        tvsname.setText(surname);
+                        tvpnumber.setText(phonenumber);
+                        tvbirthday.setText(bday);
+                        tvstate.setText(state);
+                        tvcourse.setText(course);
+                        tvlevel.setText(level);
+                        tvyear.setText(year);
 
-                    progressDialog.dismiss();
+                        progressDialog.dismiss();
 
-                    profileimg.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                        profileimg.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
 
-                            Intent sharedIntent = new Intent(getApplicationContext(), Image_FullScreen.class);
-                            Bundle bundler = new Bundle();
-                            bundler.putString("picurl", pic_url);
-                            sharedIntent.putExtras(bundler);
-                            startActivity(sharedIntent);
-                        }
-                    });
-                    contentcopy.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText("Phone Number Copied", phonenumber);
-                            clipboard.setPrimaryClip(clip);
-                            Toast.makeText(getApplicationContext(), "Phone Number Copied", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                                Intent sharedIntent = new Intent(getApplicationContext(), Image_FullScreen.class);
+                                Bundle bundler = new Bundle();
+                                bundler.putString("fname", firstname);
+                                bundler.putString("sname", surname);
+                                bundler.putString("picurl", pic_url);
+                                sharedIntent.putExtras(bundler);
+                                startActivity(sharedIntent);
+                            }
+                        });
+                        contentcopy.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                                ClipData clip = ClipData.newPlainText("Phone Number Copied", phonenumber);
+                                clipboard.setPrimaryClip(clip);
+                                Toast.makeText(getApplicationContext(), "Phone Number Copied", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
 
-                } catch (Exception ex) {
+                    } catch (Exception ex) {
 
-                    ex.printStackTrace();
+                        ex.printStackTrace();
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Sorry an Error Occured", Toast.LENGTH_LONG).show();
+
                 }
-
-            }else{
-                    Toast.makeText(getApplicationContext(),"Sorry an Error Occured",Toast.LENGTH_LONG).show();
-
-                }}
+            }
         }, retrieve);
 
         urlConnectivity.execute(pnumber);
@@ -152,14 +156,15 @@ public class Member_Profile extends AppCompatActivity {
         tvbirthday = (TextView) findViewById(R.id.profile_birthday);
         contentcopy = (ImageButton) findViewById(R.id.copycontent);
     }
+
     //Edit the Members Details
     public void Edit(View view) {
 
         adialog.setTitle("Select the Field you wish to Modify");
-        String []fields ={"First Name","Middle Name","Surname","Phone Number","Course","State of Origin","Level","Year Joined"};
+        String[] fields = {"First Name", "Middle Name", "Surname", "Phone Number", "Course", "State of Origin", "Level", "Year Joined"};
         final Spinner fieldspinners = new Spinner(getApplicationContext());
         fieldspinners.setPopupBackgroundResource(R.drawable.spinner);
-        ArrayAdapter<String> spinadapter = new ArrayAdapter<String>(this,R.layout.spinnerview,fields);
+        ArrayAdapter<String> spinadapter = new ArrayAdapter<String>(this, R.layout.spinnerview, fields);
         fieldspinners.setAdapter(spinadapter);
         adialog.setView(fieldspinners);
 
@@ -167,12 +172,13 @@ public class Member_Profile extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
-                final String getselectdeddata= fieldspinners.getSelectedItem().toString();
-                bdialog.setTitle("You are Editing the " +   getselectdeddata + " field");
+                final String getselectdeddata = fieldspinners.getSelectedItem().toString();
+                bdialog.setTitle("You are Editing the " + getselectdeddata + " field");
                 final EditText inputtext = new EditText(getApplicationContext());
-                if(getselectdeddata.equals("Phone Number") || getselectdeddata.equals("Level")|| getselectdeddata.equals("Year Joined")){
+                if (getselectdeddata.equals("Phone Number") || getselectdeddata.equals("Level") || getselectdeddata.equals("Year Joined")) {
                     inputtext.setInputType(InputType.TYPE_CLASS_NUMBER);
-                }{
+                }
+                {
                     inputtext.setInputType(InputType.TYPE_CLASS_TEXT);
 
                 }
@@ -189,66 +195,66 @@ public class Member_Profile extends AppCompatActivity {
                         adminid.setTextColor(Color.WHITE);
                         cdialog.setView(adminid);
 
-                        final String Username = getpref.getString("Username","");
-                        final String Password = getpref.getString("Password","");
+                        final String Username = getpref.getString("Username", "");
+                        final String Password = getpref.getString("Password", "");
                         cdialog.setPositiveButton("Edit Field", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 progressDialog.show();
-                                     String getid= adminid.getText().toString().toUpperCase();
-                                     if(!getid.equals("")) {
-                                         UrlConnectivity admincheck = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
-                                             @Override
-                                             public void processfinish(String output) {
-                                                 if (output.contains("Correct admin ID")) {
-                                                     String newdata = inputtext.getText().toString().toUpperCase();
-                                                     UrlConnectivity editdetail = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
-                                                         @Override
-                                                         public void processfinish(String output) {
-                                                             if (output.contains("Field Updated Successfully") && output != null) {
-                                                                 DateFormat month = new SimpleDateFormat("MMMM");
-                                                                 DateFormat day = new SimpleDateFormat("d");
-                                                                 DateFormat year = new SimpleDateFormat("YYYY");
-                                                                 Date date=new Date();
-                                                                 String strmonth =month.format(date);
-                                                                 String strday = day.format(date);
-                                                                 String stryear = year.format(date);
+                                String getid = adminid.getText().toString().toUpperCase();
+                                if (!getid.equals("")) {
+                                    UrlConnectivity admincheck = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
+                                        @Override
+                                        public void processfinish(String output) {
+                                            if (output.contains("Correct admin ID")) {
+                                                String newdata = inputtext.getText().toString().toUpperCase();
+                                                UrlConnectivity editdetail = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
+                                                    @Override
+                                                    public void processfinish(String output) {
+                                                        if (output.contains("Field Updated Successfully") && output != null) {
+                                                            DateFormat month = new SimpleDateFormat("MMMM");
+                                                            DateFormat day = new SimpleDateFormat("d");
+                                                            DateFormat year = new SimpleDateFormat("YYYY");
+                                                            Date date = new Date();
+                                                            String strmonth = month.format(date);
+                                                            String strday = day.format(date);
+                                                            String stryear = year.format(date);
 
-                                                                 String logmsg = "App User "+ Username + " Changed the " + getselectdeddata + " Field of "+ firstname + " "+ middlename + " "+ surname
-                                                                         +" on the " + strday + " of "+ strmonth + " "+stryear ;
-                                                                 UrlConnectivity logmessage = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
-                                                                     @Override
-                                                                     public void processfinish(String output) {
-                                                                         if(output.contains("Log Message Inserted Successfully")) {
-                                                                             progressDialog.dismiss();
-                                                                             recreate();
-                                                                             Toast.makeText(getApplicationContext(), "Field Updated Successfully", Toast.LENGTH_LONG).show();
-                                                                         }
-                                                                     }
-                                                                 }, "Log");
-                                                                 logmessage.execute(logmsg);
+                                                            String logmsg = "App User " + Username + " Changed the " + getselectdeddata + " Field of " + firstname + " " + middlename + " " + surname
+                                                                    + " on the " + strday + " of " + strmonth + " " + stryear;
+                                                            UrlConnectivity logmessage = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
+                                                                @Override
+                                                                public void processfinish(String output) {
+                                                                    if (output.contains("Log Message Inserted Successfully")) {
+                                                                        progressDialog.dismiss();
+                                                                        recreate();
+                                                                        Toast.makeText(getApplicationContext(), "Field Updated Successfully", Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                }
+                                                            }, "Log");
+                                                            logmessage.execute(logmsg);
 
-                                                             } else {
-                                                                 progressDialog.dismiss();
-                                                                 Toast.makeText(getApplicationContext(), "Sorry An error Occured. Please try again later", Toast.LENGTH_LONG).show();
-                                                             }
-                                                         }
-                                                     }, "EditDetails");
-                                                     editdetail.execute(phonenumber, getselectdeddata, newdata);
-                                                 } else {
-                                                     progressDialog.dismiss();
-                                                     Toast.makeText(getApplicationContext(), "Incorrect Administrative ID", Toast.LENGTH_LONG).show();
-                                                 }
-                                             }
+                                                        } else {
+                                                            progressDialog.dismiss();
+                                                            Toast.makeText(getApplicationContext(), "Sorry An error Occured. Please try again later", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }
+                                                }, "EditDetails");
+                                                editdetail.execute(phonenumber, getselectdeddata, newdata);
+                                            } else {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(getApplicationContext(), "Incorrect Administrative ID", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
 
-                                         }, "CheckAdmin");
+                                    }, "CheckAdmin");
 
-                                         admincheck.execute(getid,Username, Password );
-                                     }else{
-                                         progressDialog.dismiss();
-                                         Toast.makeText(getApplicationContext(),"Administrative ID Field is empty",Toast.LENGTH_LONG).show();
-                                     }
-                                     }
+                                    admincheck.execute(getid, Username, Password);
+                                } else {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "Administrative ID Field is empty", Toast.LENGTH_LONG).show();
+                                }
+                            }
                         });
                         cdialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
