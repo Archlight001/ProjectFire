@@ -2,7 +2,10 @@ package denokela.com.projectfire;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -68,6 +71,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         Bundle getnames = getActivity().getIntent().getExtras();
         String names = getnames.getString("Name");
+
+        SharedPreferences sharedpref= getActivity().getSharedPreferences("UserInfo",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =sharedpref.edit();
+        editor.putString("Username",getnames.getString("Username"));
+        editor.putString("Password",getnames.getString("Password"));
+        editor.apply();
+
         nametview.setText(names);
         buttonsearch.setOnClickListener(this);
         viewall.setOnClickListener(this);

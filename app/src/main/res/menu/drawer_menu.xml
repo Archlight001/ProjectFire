@@ -16,8 +16,6 @@
             android:title="Assign New Excos/Upgrade Database"/>
         <item android:id="@+id/nav_bdays"
             android:title="Birthdays of the Month"/>
-        <item android:id="@+id/adminprofile"
-            android:title="Admin Profile"></item>
         <item android:id="@+id/nav_exit"
             android:title="Exit"></item>
     </group>

@@ -80,9 +80,6 @@ public class Birthdays_Of_The_Month extends Fragment implements AdapterView.OnIt
         for(int w=0;w<tempbday.length;w++){
             tempbday[w] = Integer.toString(tbday[w]);
         }
-        for(int w=0;w<tempbday.length;w++){
-            Toast.makeText(getContext(),tempbday[w],Toast.LENGTH_SHORT).show();
-        }
 
         for(int w=0;w<tempbday.length;w++){
             if(!tempbday[w].equals(bday[w])){

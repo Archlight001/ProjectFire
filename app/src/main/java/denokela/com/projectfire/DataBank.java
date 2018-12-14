@@ -1,9 +1,11 @@
 package denokela.com.projectfire;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ProgressBar;
@@ -261,12 +263,13 @@ public class DataBank extends AsyncTask<String, Void, String> {
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
+
                         Bundle Basket = new Bundle();
                         Basket.putString("Name", names);
                         Basket.putString("Username", ParsedUsername);
                         Basket.putString("Password", Parsedpassword);
                         context.startActivity(new Intent(context, WelcomeScreen.class).putExtras(Basket));
-
+                        ((Activity) context).finish();
                     }
                 }
             };

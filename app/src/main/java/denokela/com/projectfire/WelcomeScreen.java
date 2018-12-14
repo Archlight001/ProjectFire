@@ -112,6 +112,9 @@ public class WelcomeScreen extends AppCompatActivity implements NavigationView.O
             case R.id.nav_bdays:
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Birthdays_Of_The_Month()).commit();
                 break;
+            case R.id.nav_exit:
+                finish();
+                break;
     }
         drawer.closeDrawer(GravityCompat.START);
         return true;

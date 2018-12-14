@@ -232,6 +232,83 @@ public class UrlConnectivity extends AsyncTask<String, Void, String> {
                     e.printStackTrace();
                 }
             }
+            else if(connecturl.equals("EditDetails")){
+                String PhoneNumber = params[0];
+                String Field = params[1];
+                String New_data = params[2];
+                try{
+                    String address="http://192.168.43.194/FB_DATA/editmemberdetails.php";
+                    URL url = new URL(address);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                            outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("PhoneNumber", "UTF-8") + "=" +
+                            URLEncoder.encode(PhoneNumber, "UTF-8")+ "&" +
+                            URLEncoder.encode("Field", "UTF-8") + "=" +
+                            URLEncoder.encode(Field, "UTF-8")+ "&" +
+                            URLEncoder.encode("NewData", "UTF-8") + "=" +
+                            URLEncoder.encode(New_data, "UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
+
+
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String line = "";
+                    String result = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+                    return result;
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else if(connecturl.equals("Log")){
+                String Log = params[0];
+                try{
+                    String address="http://192.168.43.194/FB_DATA/logs.php";
+                    URL url = new URL(address);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                            outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("Log", "UTF-8") + "=" +
+                            URLEncoder.encode(Log, "UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
+
+
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String line = "";
+                    String result = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+                    return result;
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
 
 
             return null;

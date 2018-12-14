@@ -3,8 +3,10 @@ package denokela.com.projectfire;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -301,9 +303,9 @@ public class UserReg_Fragment extends Fragment implements View.OnClickListener {
                 progressDialog.show();
                 progressDialog.setCancelable(false);
                 String adminid = input.getText().toString().trim().toUpperCase();
-                Bundle names = getActivity().getIntent().getExtras();
-                String Username = names.getString("Username");
-                String Password = names.getString("Password");
+                SharedPreferences getpref = getActivity().getSharedPreferences("UserInfo",Context.MODE_PRIVATE);
+                String Username = getpref.getString("Username","");
+                String Password = getpref.getString("Password","");
                 String check = "CheckAdmin";
 
                 UrlConnectivity urlConnectivity = new UrlConnectivity(new UrlConnectivity.AsyncResponse() {
