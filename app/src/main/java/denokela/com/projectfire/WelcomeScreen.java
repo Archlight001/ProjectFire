@@ -1,7 +1,12 @@
 package denokela.com.projectfire;
 
 import android.app.ProgressDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,12 +25,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class WelcomeScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     private DrawerLayout drawer;
     private Boolean doubleBacktoExitPressedOnce= false;
+
+    private static final String TAG = "Class: ";
+    private Boolean hasbeenScheduled = false;
+    private Integer JOB_ID=764198;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
+
+        JobScheduler scheduler= (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        for(JobInfo jobInfo:scheduler.getAllPendingJobs()){
+            if(jobInfo.getId()==JOB_ID){
+                hasbeenScheduled=true;
+                break;
+            }
+        }
+        if(hasbeenScheduled == false){
+            addBirthdayReminder();
+        }
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.Projectbackcolor));
@@ -39,11 +62,31 @@ public class WelcomeScreen extends AppCompatActivity implements NavigationView.O
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
         if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
     }
+
+    private void addBirthdayReminder() {
+        ComponentName componentName = new ComponentName(this,Jservice.class);
+        JobInfo info = new JobInfo.Builder(JOB_ID,componentName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_METERED)
+                .setPersisted(true)
+                .setPeriodic(15*60*1000)
+                .build();
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        int resultcode = scheduler.schedule(info);
+        if(resultcode == JobScheduler.RESULT_SUCCESS){
+
+            Log.d(TAG,"Job Scheduled" );
+        }else{
+            Log.d(TAG,"Job Scheduling failed" );
+        }
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -54,6 +97,7 @@ public class WelcomeScreen extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()){
             case R.id.baradmin_id:
                 final AlertDialog adminidalert= new AlertDialog.Builder(this,R.style.MyDialogTheme).create();
@@ -80,6 +124,9 @@ public class WelcomeScreen extends AppCompatActivity implements NavigationView.O
                 },"GetAdmin");
                 getadmidid.execute(username,password);
                 break;
+
+
+
         }
         return super.onOptionsItemSelected(item);
     }

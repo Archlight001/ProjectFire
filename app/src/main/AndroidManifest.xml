@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,6 +40,9 @@
         <activity android:name=".Marshall_Profile" />
         <activity android:name=".ExcoListView_BySet" />
         <activity android:name=".UpgradeList" />
+
+        <service android:name=".Jservice"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

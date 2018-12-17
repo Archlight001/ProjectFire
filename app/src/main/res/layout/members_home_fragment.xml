@@ -116,6 +116,7 @@
                 android:layout_below="@id/viewleveltitle"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/edittext_bg"
+                android:popupBackground="@drawable/spinner"
                 android:spinnerMode="dropdown" />
 
             <Button

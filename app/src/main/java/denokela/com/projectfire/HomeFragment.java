@@ -2,6 +2,9 @@ package denokela.com.projectfire;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +40,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     String searchword, marshallsearchword;
     Spinner viewerspin, marshviewerspin;
     TabHost tabHost;
+
 
     @Nullable
     @Override
@@ -105,6 +110,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void requestStoragePermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED) {
+
             return;
         }
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
@@ -121,6 +127,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
+
 
     @Override
     public void onClick(View view) {

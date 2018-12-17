@@ -12,13 +12,12 @@
         android:id="@+id/tvassign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ASSIGN NEW EXCOS HERE"
-        android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/White"
+        android:text="ASSIGN NEW EXCOS HERE"
         android:textAlignment="center"
+        android:textColor="@color/White"
         android:textSize="30sp"
-        />
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/spinnnerposts"
@@ -27,6 +26,7 @@
         android:layout_below="@id/tvassign"
         android:layout_marginTop="58dp"
         android:background="@drawable/edittext_bg"
+        android:popupBackground="@drawable/spinner"
         android:spinnerMode="dropdown" />
 
     <Button
